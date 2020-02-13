@@ -1,0 +1,41 @@
+# Spring Boot
+  
+server:
+  address: 0.0.0.0
+  port: 18080
+  
+spring:
+  application:
+    name: SSH Tunneling Server
+
+logging:
+  config: ./config/log4j2.yml
+
+open-commons:
+  spring:
+    web:
+      factory:
+        enum:
+          packages:
+            - kr.co.lguplus.tgw.agent
+      resttemplate:
+        # RestTemplate Http 연결 설정      
+        requestfactory:
+          bufferRequestBody: true
+          connectionRequestTimeout: 3000
+          connectionTimeout: 5000
+          readTimeout: 30000
+    async:
+      thread-pool-task-executor:
+        corePoolSize: 128 # default: 1
+        maxPoolSize: 1024 # default: Integer.MAX_VALUE
+        queueCapacity: 1024 # default: Integer.MAX_VALUE
+        keepAliveSeconds: 60 # default: 60
+        allowCoreThreadTimeOut: false # default: false
+        awaitTerminationSeconds: 0 # default: 0
+        waitForTasksToCompleteOnShutdown: false # default: false
+        daemon: false # default: false
+        threadGroupName: async
+        threadNamePrefix: router
+        threadPriority: 5 # MIN: 1, NORMAL: 5, MAX: 10
+
