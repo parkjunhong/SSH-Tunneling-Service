@@ -29,6 +29,7 @@ package open.commons.tools.ssh.controller.dto;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 
 /**
@@ -68,11 +69,11 @@ public class ConnectionDTO {
 
     @NotNull
     @Valid
-    private TunnelingDTO tunneling;
+    private TunnelingInfo tunneling;
 
-    @NotNull
+    @Nullable
     @Valid
-    private ExecutionDTO execution;
+    private ExecutionInfo execution;
 
     /**
      * 
@@ -87,7 +88,7 @@ public class ConnectionDTO {
      *
      * @since 2020. 2. 13.
      */
-    public ExecutionDTO getExecution() {
+    public ExecutionInfo getExecution() {
         return execution;
     }
 
@@ -97,7 +98,7 @@ public class ConnectionDTO {
      *
      * @since 2020. 2. 13.
      */
-    public TunnelingDTO getTunneling() {
+    public TunnelingInfo getTunneling() {
         return tunneling;
     }
 
@@ -107,7 +108,7 @@ public class ConnectionDTO {
      *
      * @since 2020. 2. 13.
      */
-    public void setExecution(ExecutionDTO execution) {
+    public void setExecution(ExecutionInfo execution) {
         this.execution = execution;
     }
 
@@ -117,7 +118,7 @@ public class ConnectionDTO {
      *
      * @since 2020. 2. 13.
      */
-    public void setTunneling(TunnelingDTO tunneling) {
+    public void setTunneling(TunnelingInfo tunneling) {
         this.tunneling = tunneling;
     }
 

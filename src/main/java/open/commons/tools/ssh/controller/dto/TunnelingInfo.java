@@ -31,6 +31,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 
 /**
@@ -56,7 +57,7 @@ import org.springframework.validation.annotation.Validated;
  * @author Park_Jun_Hong_(fafanmama_at_naver_com)
  */
 @Validated
-public class TunnelingDTO {
+public class TunnelingInfo {
     @NotEmpty
     private String userId;
     @NotEmpty
@@ -66,7 +67,8 @@ public class TunnelingDTO {
     private String sshServerHost;
     @Min(1)
     @Max(65535)
-    private int sshServerPort;
+    @Nullable
+    private int sshServerPort = 22;
     @Min(1)
     @Max(65535)
     private int tunnelingPort;
@@ -75,7 +77,7 @@ public class TunnelingDTO {
      * 
      * @since 2020. 2. 13.
      */
-    public TunnelingDTO() {
+    public TunnelingInfo() {
     }
 
     /**
@@ -198,7 +200,7 @@ public class TunnelingDTO {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("TunnelingDTO [userId=");
+        builder.append("TunnelingInfo [userId=");
         builder.append(userId);
         builder.append(", userPwd=");
         builder.append(userPwd);
@@ -211,5 +213,4 @@ public class TunnelingDTO {
         builder.append("]");
         return builder.toString();
     }
-
 }

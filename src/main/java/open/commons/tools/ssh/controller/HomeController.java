@@ -31,9 +31,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -45,7 +47,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import open.commons.spring.web.mvc.service.AbstractComponent;
+import open.commons.tools.ssh.Const;
 import open.commons.tools.ssh.controller.dto.ConnectionDTO;
+import open.commons.tools.ssh.service.ISshTunnelingService;
+import open.commons.tools.ssh.service.impl.SshTunnelingService;
 
 /**
  * 
@@ -58,6 +63,10 @@ import open.commons.tools.ssh.controller.dto.ConnectionDTO;
 @RequestMapping("/connections")
 public class HomeController extends AbstractComponent {
 
+    @Autowired
+    @Qualifier(SshTunnelingService.BEAN_QUALIFIER)
+    private ISshTunnelingService sshSvc;
+
     /**
      * 
      * @since 2020. 2. 13.
@@ -65,20 +74,22 @@ public class HomeController extends AbstractComponent {
     public HomeController() {
     }
 
+    @PutMapping(path = "/{service-host}/{service-port}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> connect(HttpServletRequest request, HttpServletResponse response //
+            , @PathVariable("service-host") @Pattern(regexp = Const.REGEX_IPV4) String serviceHost //
+            , @PathVariable("service-port") @NotNull @Min(1) @Max(65535) int servicePort //
+            , @RequestBody @Valid @NotNull ConnectionDTO connection //
+    ) {
+        logger.debug("connection: {}", connection);
+
+        Object resEntity = sshSvc.connect(connection.getTunneling(), serviceHost, servicePort, connection.getExecution());
+
+        return ResponseEntity.ok(resEntity);
+    }
+
     @GetMapping(path = "", produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<Object> getConnections(HttpServletRequest request, HttpServletResponse response //
     ) {
         return ResponseEntity.ok("1");
-    }
-
-    @PutMapping(path = "/{service-host}/{service-port}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> connect(HttpServletRequest request, HttpServletResponse response //
-            , @PathVariable("service-host") @Valid @NotNull @NotEmpty String serviceHost //
-            , @PathVariable("service-port") @Valid @NotNull @Min(1) @Max(65535) int servicePort //
-            , @RequestBody @Valid @NotNull ConnectionDTO connection //
-    ) {
-
-        logger.debug("connection: {}", connection);
-        return null;
     }
 }

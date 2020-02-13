@@ -65,7 +65,7 @@ import open.commons.spring.web.annotation.RequestValueSupported;
  * @author Park_Jun_Hong_(fafanmama_at_naver_com)
  */
 @Validated
-public class ExecutionDTO {
+public class ExecutionInfo {
     @NotNull
     private ExecutionType type;
 
@@ -81,7 +81,7 @@ public class ExecutionDTO {
      * 
      * @since 2020. 2. 13.
      */
-    public ExecutionDTO() {
+    public ExecutionInfo() {
     }
 
     /**
@@ -164,7 +164,7 @@ public class ExecutionDTO {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("ExecutionDTO [type=");
+        builder.append("ExecutionInfo [type=");
         builder.append(type);
         builder.append(", begin=");
         builder.append(begin);
@@ -293,7 +293,7 @@ public class ExecutionDTO {
 
         /**
          *
-         * @return a string of an instance of {@link ExecutionDTO.ExecutionEndType}
+         * @return a string of an instance of {@link ExecutionInfo.ExecutionEndType}
          */
         public String get() {
             return this.type;
@@ -302,40 +302,40 @@ public class ExecutionDTO {
         /**
          * 
          * @param type
-         *            a string for {@link ExecutionDTO.ExecutionEndType} instance.
+         *            a string for {@link ExecutionInfo.ExecutionEndType} instance.
          *
-         * @return an instance of {@link ExecutionDTO.ExecutionEndType}
+         * @return an instance of {@link ExecutionInfo.ExecutionEndType}
          *
          * @see #get(String, boolean)
          */
-        public static ExecutionDTO.ExecutionEndType get(String type) {
+        public static ExecutionInfo.ExecutionEndType get(String type) {
             return get(type, false);
         }
 
         /**
          *
          * @param type
-         *            a string for an instance of {@link ExecutionDTO.ExecutionEndType}.
+         *            a string for an instance of {@link ExecutionInfo.ExecutionEndType}.
          * @param ignoreCase
          *            ignore <code><b>case-sensitive</b></code> or not.
          *
-         * @return an instance of {@link ExecutionDTO.ExecutionEndType}
+         * @return an instance of {@link ExecutionInfo.ExecutionEndType}
          */
         @RequestValueConverter(hasIgnoreCase = true)
-        public static ExecutionDTO.ExecutionEndType get(String type, boolean ignoreCase) {
+        public static ExecutionInfo.ExecutionEndType get(String type, boolean ignoreCase) {
 
             if (type == null) {
                 throw new IllegalArgumentException("'type' MUST NOT be null. input: " + type);
             }
 
             if (ignoreCase) {
-                for (ExecutionDTO.ExecutionEndType value : values()) {
+                for (ExecutionInfo.ExecutionEndType value : values()) {
                     if (value.type.equalsIgnoreCase(type)) {
                         return value;
                     }
                 }
             } else {
-                for (ExecutionDTO.ExecutionEndType value : values()) {
+                for (ExecutionInfo.ExecutionEndType value : values()) {
                     if (value.type.equals(type)) {
                         return value;
                     }
@@ -343,14 +343,14 @@ public class ExecutionDTO {
             }
 
             throw new IllegalArgumentException(
-                    "Unexpected 'type' value of 'ExecutionDTO.ExecutionEndType'. expected: " + values0() + " & Ignore case-sensitive: " + ignoreCase + ", input: " + type);
+                    "Unexpected 'type' value of 'ExecutionInfo.ExecutionEndType'. expected: " + values0() + " & Ignore case-sensitive: " + ignoreCase + ", input: " + type);
         }
 
         private static List<String> values0() {
 
             List<String> valuesStr = new ArrayList<>();
 
-            for (ExecutionDTO.ExecutionEndType value : values()) {
+            for (ExecutionInfo.ExecutionEndType value : values()) {
                 valuesStr.add(value.get());
             }
 
@@ -373,7 +373,7 @@ public class ExecutionDTO {
 
         /**
          *
-         * @return a string of an instance of {@link ExecutionDTO.ExecutionType}
+         * @return a string of an instance of {@link ExecutionInfo.ExecutionType}
          */
         public String get() {
             return this.type;
@@ -382,40 +382,40 @@ public class ExecutionDTO {
         /**
          * 
          * @param type
-         *            a string for {@link ExecutionDTO.ExecutionType} instance.
+         *            a string for {@link ExecutionInfo.ExecutionType} instance.
          *
-         * @return an instance of {@link ExecutionDTO.ExecutionType}
+         * @return an instance of {@link ExecutionInfo.ExecutionType}
          *
          * @see #get(String, boolean)
          */
-        public static ExecutionDTO.ExecutionType get(String type) {
+        public static ExecutionInfo.ExecutionType get(String type) {
             return get(type, false);
         }
 
         /**
          *
          * @param type
-         *            a string for an instance of {@link ExecutionDTO.ExecutionType}.
+         *            a string for an instance of {@link ExecutionInfo.ExecutionType}.
          * @param ignoreCase
          *            ignore <code><b>case-sensitive</b></code> or not.
          *
-         * @return an instance of {@link ExecutionDTO.ExecutionType}
+         * @return an instance of {@link ExecutionInfo.ExecutionType}
          */
         @RequestValueConverter(hasIgnoreCase = true)
-        public static ExecutionDTO.ExecutionType get(String type, boolean ignoreCase) {
+        public static ExecutionInfo.ExecutionType get(String type, boolean ignoreCase) {
 
             if (type == null) {
                 throw new IllegalArgumentException("'type' MUST NOT be null. input: " + type);
             }
 
             if (ignoreCase) {
-                for (ExecutionDTO.ExecutionType value : values()) {
+                for (ExecutionInfo.ExecutionType value : values()) {
                     if (value.type.equalsIgnoreCase(type)) {
                         return value;
                     }
                 }
             } else {
-                for (ExecutionDTO.ExecutionType value : values()) {
+                for (ExecutionInfo.ExecutionType value : values()) {
                     if (value.type.equals(type)) {
                         return value;
                     }
@@ -423,14 +423,14 @@ public class ExecutionDTO {
             }
 
             throw new IllegalArgumentException(
-                    "Unexpected 'type' value of 'ExecutionDTO.ExecutionType'. expected: " + values0() + " & Ignore case-sensitive: " + ignoreCase + ", input: " + type);
+                    "Unexpected 'type' value of 'ExecutionInfo.ExecutionType'. expected: " + values0() + " & Ignore case-sensitive: " + ignoreCase + ", input: " + type);
         }
 
         private static List<String> values0() {
 
             List<String> valuesStr = new ArrayList<>();
 
-            for (ExecutionDTO.ExecutionType value : values()) {
+            for (ExecutionInfo.ExecutionType value : values()) {
                 valuesStr.add(value.get());
             }
 
