@@ -30,9 +30,9 @@
 		<log4j.version>2.11.1</log4j.version>
 		<log4j-slf4j.version>2.11.1</log4j-slf4j.version>
 
-		<open-commons-core.version>1.6.16</open-commons-core.version>
-		<open-commons-spring-web.version>0.2.2</open-commons-spring-web.version>
-		<open-commons-spring-jdbc.version>0.0.5</open-commons-spring-jdbc.version>
+		<open-commons-core.version>1.6.18-SNAPSHOT</open-commons-core.version>
+		<open-commons-spring-web.version>0.2.4-SNAPSHOT</open-commons-spring-web.version>
+		<open-commons-spring-jdbc.version>0.0.7-SNAPSHOT</open-commons-spring-jdbc.version>
 
 		<oracje-jdbc.verson>12.2.0.1</oracje-jdbc.verson>
 		<!-- end - dependencies / !!! 프로젝트에 맞춰 변경할 것 !!! -->
