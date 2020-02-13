@@ -1,0 +1,215 @@
+/*
+ * Copyright 2020 Park Jun-Hong_(parkjunhong77/google/com)
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ *
+ * This file is generated under this project, "SSH-Tunneling-Service".
+ *
+ * Date  : 2020. 2. 13. 오후 5:55:18
+ *
+ * Author: Park_Jun_Hong_(fafanmama_at_naver_com)
+ * 
+ */
+
+package open.commons.tools.ssh.controller.dto;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+
+import org.springframework.validation.annotation.Validated;
+
+/**
+ * SSH Tunneling 연결 정보
+ * 
+ * <a href="http://tools.ietf.org/html/rfc7159">JSON</a> source: <br>
+ * 
+ * <pre>
+ * 
+ * [CASE - 0]
+ * 
+ * {
+ *   "userId": "user-id",
+ *   "userPwd": "user-passwd",
+ *   "sshServerHost": "192.168.10.1",
+ *   "sshServerPort": 22,
+ *   "tunnelingPort": 8282
+ * }
+ * </pre>
+ * 
+ * @since 2020. 2. 13.
+ * @version _._._
+ * @author Park_Jun_Hong_(fafanmama_at_naver_com)
+ */
+@Validated
+public class TunnelingDTO {
+    @NotEmpty
+    private String userId;
+    @NotEmpty
+    private String userPwd;
+    @NotEmpty
+    @Pattern(regexp = "^(1?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])(\\.(1?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])){3}$")
+    private String sshServerHost;
+    @Min(1)
+    @Max(65535)
+    private int sshServerPort;
+    @Min(1)
+    @Max(65535)
+    private int tunnelingPort;
+
+    /**
+     * 
+     * @since 2020. 2. 13.
+     */
+    public TunnelingDTO() {
+    }
+
+    /**
+     *
+     * @return the sshServerHost
+     *
+     * @since 2020. 2. 13.
+     */
+    public String getSshServerHost() {
+        return sshServerHost;
+    }
+
+    /**
+     *
+     * @return the sshServerPort
+     *
+     * @since 2020. 2. 13.
+     */
+    public int getSshServerPort() {
+        return sshServerPort;
+    }
+
+    /**
+     *
+     * @return the tunnelingPort
+     *
+     * @since 2020. 2. 13.
+     */
+    public int getTunnelingPort() {
+        return tunnelingPort;
+    }
+
+    /**
+     *
+     * @return the userId
+     *
+     * @since 2020. 2. 13.
+     */
+    public String getUserId() {
+        return userId;
+    }
+
+    /**
+     *
+     * @return the userPwd
+     *
+     * @since 2020. 2. 13.
+     */
+    public String getUserPwd() {
+        return userPwd;
+    }
+
+    /**
+     * @param sshServerHost
+     *            the sshServerHost to set
+     *
+     * @since 2020. 2. 13.
+     */
+    public void setSshServerHost(String sshServerHost) {
+        this.sshServerHost = sshServerHost;
+    }
+
+    /**
+     * @param sshServerPort
+     *            the sshServerPort to set
+     *
+     * @since 2020. 2. 13.
+     */
+    public void setSshServerPort(int sshServerPort) {
+        this.sshServerPort = sshServerPort;
+    }
+
+    /**
+     * @param tunnelingPort
+     *            the tunnelingPort to set
+     *
+     * @since 2020. 2. 13.
+     */
+    public void setTunnelingPort(int tunnelingPort) {
+        this.tunnelingPort = tunnelingPort;
+    }
+
+    /**
+     * @param userId
+     *            the userId to set
+     *
+     * @since 2020. 2. 13.
+     */
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    /**
+     * @param userPwd
+     *            the userPwd to set
+     *
+     * @since 2020. 2. 13.
+     */
+    public void setUserPwd(String userPwd) {
+        this.userPwd = userPwd;
+    }
+
+    /**
+     * <br>
+     * 
+     * <pre>
+     * [개정이력]
+     *      날짜    	| 작성자	|	내용
+     * ------------------------------------------
+     * 2020. 2. 13.		박준홍			최초 작성
+     * </pre>
+     *
+     * @return
+     *
+     * @since 2020. 2. 13.
+     * @author Park_Jun_Hong_(fafanmama_at_naver_com)
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("TunnelingDTO [userId=");
+        builder.append(userId);
+        builder.append(", userPwd=");
+        builder.append(userPwd);
+        builder.append(", sshServerHost=");
+        builder.append(sshServerHost);
+        builder.append(", sshServerPort=");
+        builder.append(sshServerPort);
+        builder.append(", tunnelingPort=");
+        builder.append(tunnelingPort);
+        builder.append("]");
+        return builder.toString();
+    }
+
+}
