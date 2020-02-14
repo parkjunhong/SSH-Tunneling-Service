@@ -50,11 +50,11 @@ import open.commons.spring.web.annotation.RequestValueSupported;
  * [CASE - 0]
  * 
  * {
- *   "type": "now|schedule",
+ *   "type": "now",
  *   "begin": 123456789,
  *   "end": {
- *     "type": "duration|until",
- *     "duration": "duration: \\d+[s|m|h|d|y]",
+ *     "type": "duration",
+ *     "duration": "2d",
  *     "until": 123456789
  *   }
  * }
