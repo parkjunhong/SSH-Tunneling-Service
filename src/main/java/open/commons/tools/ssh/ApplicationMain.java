@@ -49,6 +49,7 @@ import open.commons.spring.web.listener.SpringApplicationListener;
 @ServletComponentScan
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
 @EnableWebMvc
+@SuppressWarnings("unused")
 public class ApplicationMain {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationMain.class);
