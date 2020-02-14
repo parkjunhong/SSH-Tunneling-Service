@@ -63,5 +63,6 @@ Configuration:
         includeLocation: true
         additivity: false
         AppenderRef:
+          - ref: ConsoleByPattern
           - ref: RollingFileByPattern
 
