@@ -33,9 +33,10 @@
 		<open-commons-core.version>1.6.18-SNAPSHOT</open-commons-core.version>
 		<open-commons-spring-web.version>0.2.4-SNAPSHOT</open-commons-spring-web.version>
 		<open-commons-spring-jdbc.version>0.0.7-SNAPSHOT</open-commons-spring-jdbc.version>
-
-		<oracje-jdbc.verson>12.2.0.1</oracje-jdbc.verson>
+		
+		<jsh.version>0.1.55</jsh.version>
 		<!-- end - dependencies / !!! 프로젝트에 맞춰 변경할 것 !!! -->
+		
 	</properties>
 
 	<repositories>
@@ -165,6 +166,16 @@
 		</dependency>
 		<!-- ************** -->
 
+		<!-- ************** -->
+		<!-- begin:  ssh client -->
+		<!-- https://mvnrepository.com/artifact/com.jcraft/jsch -->
+		<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>${jsh.version}</version>
+		</dependency>
+		<!-- end:  ssh client -->
+		<!-- ************** -->
 	</dependencies>
 
 	<build>
@@ -289,7 +300,8 @@
 								importPackage(org.apache.commons.io);
 								importPackage(java.io);
 
-								var dir = new File(project.getBuild().getDirectory(), "${build.finalName}");
+								var dir = new
+								File(project.getBuild().getDirectory(), "${build.finalName}");
 								var profile = new File(dir, ".profile");
 								FileUtils.write(profile,
 								"${build.profile}", "UTF-8");

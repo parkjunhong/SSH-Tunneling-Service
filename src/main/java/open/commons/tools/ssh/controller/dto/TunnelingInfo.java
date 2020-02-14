@@ -44,11 +44,11 @@ import org.springframework.validation.annotation.Validated;
  * [CASE - 0]
  * 
  * {
- *   "userId": "user-id",
- *   "userPwd": "user-passwd",
+ *   "username": "user-id",
+ *   "password": "user-passwd",
  *   "sshServerHost": "192.168.10.1",
  *   "sshServerPort": 22,
- *   "tunnelingPort": 8282
+ *   "remotePort": 8282
  * }
  * </pre>
  * 
@@ -59,9 +59,9 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class TunnelingInfo {
     @NotEmpty
-    private String userId;
+    private String username;
     @NotEmpty
-    private String userPwd;
+    private String password;
     @NotEmpty
     @Pattern(regexp = "^(1?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])(\\.(1?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])){3}$")
     private String sshServerHost;
@@ -71,13 +71,33 @@ public class TunnelingInfo {
     private int sshServerPort = 22;
     @Min(1)
     @Max(65535)
-    private int tunnelingPort;
+    private int remotePort;
 
     /**
      * 
      * @since 2020. 2. 13.
      */
     public TunnelingInfo() {
+    }
+
+    /**
+     *
+     * @return the password
+     *
+     * @since 2020. 2. 13.
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     *
+     * @return the remotePort
+     *
+     * @since 2020. 2. 13.
+     */
+    public int getRemotePort() {
+        return remotePort;
     }
 
     /**
@@ -102,32 +122,32 @@ public class TunnelingInfo {
 
     /**
      *
-     * @return the tunnelingPort
+     * @return the username
      *
      * @since 2020. 2. 13.
      */
-    public int getTunnelingPort() {
-        return tunnelingPort;
+    public String getUsername() {
+        return username;
     }
 
     /**
-     *
-     * @return the userId
+     * @param password
+     *            the password to set
      *
      * @since 2020. 2. 13.
      */
-    public String getUserId() {
-        return userId;
+    public void setPassword(String userPwd) {
+        this.password = userPwd;
     }
 
     /**
-     *
-     * @return the userPwd
+     * @param remotePort
+     *            the remotePort to set
      *
      * @since 2020. 2. 13.
      */
-    public String getUserPwd() {
-        return userPwd;
+    public void setRemotePort(int tunnelingPort) {
+        this.remotePort = tunnelingPort;
     }
 
     /**
@@ -151,33 +171,13 @@ public class TunnelingInfo {
     }
 
     /**
-     * @param tunnelingPort
-     *            the tunnelingPort to set
+     * @param username
+     *            the username to set
      *
      * @since 2020. 2. 13.
      */
-    public void setTunnelingPort(int tunnelingPort) {
-        this.tunnelingPort = tunnelingPort;
-    }
-
-    /**
-     * @param userId
-     *            the userId to set
-     *
-     * @since 2020. 2. 13.
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * @param userPwd
-     *            the userPwd to set
-     *
-     * @since 2020. 2. 13.
-     */
-    public void setUserPwd(String userPwd) {
-        this.userPwd = userPwd;
+    public void setUsername(String userId) {
+        this.username = userId;
     }
 
     /**
@@ -200,16 +200,16 @@ public class TunnelingInfo {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("TunnelingInfo [userId=");
-        builder.append(userId);
-        builder.append(", userPwd=");
-        builder.append(userPwd);
+        builder.append("TunnelingInfo [username=");
+        builder.append(username);
+        builder.append(", password=");
+        builder.append(password);
         builder.append(", sshServerHost=");
         builder.append(sshServerHost);
         builder.append(", sshServerPort=");
         builder.append(sshServerPort);
-        builder.append(", tunnelingPort=");
-        builder.append(tunnelingPort);
+        builder.append(", remotePort=");
+        builder.append(remotePort);
         builder.append("]");
         return builder.toString();
     }
