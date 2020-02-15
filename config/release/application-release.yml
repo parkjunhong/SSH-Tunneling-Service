@@ -1,3 +1,4 @@
+
 # Spring Boot
   
 server:
@@ -19,7 +20,7 @@ open-commons:
       factory:
         enum:
           packages:
-            - kr.co.lguplus.tgw.agent
+            - open.commons.tools.ssh
       resttemplate:
         # RestTemplate Http 연결 설정      
         requestfactory:
