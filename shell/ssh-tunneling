@@ -8,6 +8,58 @@
 # Tunneling using SSH Remote Port Forwarding.
 # command: ssh -R {remote-port}:{service-host}:{service-port} {username)@{ssh-server-host} -p {ssh-server-port}
 
+
+help-connect(){
+	if [ "$1" == "1" ];
+	then
+		echo "[Example]"
+	fi
+
+	echo " connect   : connect to ssh server for remote port forwarding."
+	echo " e.g.) ssh-tcm.sh connect -r <rport>:<host>:<port> -s <svr-host>:<svr-port> -u <username> -p <userpwd> -v"
+	echo " [options]"
+	echo " -p: Use to 'connect'."
+	echo "     SSH Server user password"
+	echo " -r: Use to 'connect'."
+	echo "     Remote Port Forwarding(RPF) Information."
+	echo "     + rport : remote port."
+	echo "     + host  : RFP destination host."
+	echo "     + port  : RFP destination port."
+	echo " -s: Use to 'connect'."
+	echo "     SSH Server Information."
+	echo "     + svr-host: SSH Server host."
+	echo "     + svr-port: SSH Server port."
+	echo " -u: Use to 'connect'."
+	echo "     SSH Server user name"
+}
+
+help-disconnect(){
+	if [ "$1" == "1" ];
+	then
+		echo "[Example]"
+	fi
+	
+	echo " disconnect: cancel a remote port forwarding."
+	echo " e.g.) ssh-tcm.sh disconnect -t <rport>:<username>@<svr-host>:<svr-port>"
+	echo " [options]"
+	echo " -t: Use to 'disconnect'."
+	echo "     Remote Port Forrwarding Unique Information."
+	echo "     + rport: remote port"
+	echo "     + username: account username."
+	echo "     + svr-host: SSH Server host."
+	echo "     + svr-port: SSH Server port."
+}
+
+help-list(){
+	if [ "$1" == "1" ];
+	then
+		echo "[Example]"
+	fi
+
+	echo " list      : provide remote port forwarding information."
+	echo " e.g.) ssh-tcm.sh list"
+}
+
 #
 # @param $1 {string} (optional) error cause.
 help(){
@@ -21,36 +73,13 @@ help(){
 	echo "Usage:"
 	echo " ssh-tcm.sh <command> <options>"
 	echo
-	echo "[Examples]"
-	echo " ssh-tcm.sh connect -r <rport>:<host>:<port> -s <svr-host>:<svr-port> -u <username> -p <userpwd> -v"
-	echo " ssh-tcm.sh disconnect -t <rport>:<username>@<svr-host>:<svr-port>"
-	echo " ssh-tcm.sh list"
-	echo
 	echo "[Command]"
-	echo " connect   : connect to ssh server for remote port forwarding."
-	echo " disconnect: cancel a remote port forwarding."
-	echo " list      : provide remote port forwarding information."
+	help-connect
+	echo
+	help-disconnect
+	echo
+	help-list
 	echo 
-	echo "[Options]"
-	echo " -p: Use to 'connect'."
-	echo "     SSH Server user password"
-	echo " -r: Use to 'connect'."
-	echo "     Remote Port Forwarding(RPF) Information."
-	echo "     + rport : remote port."
-	echo "     + host  : RFP destination host."
-	echo "     + port  : RFP destination port."
-	echo " -s: Use to 'connect'."
-	echo "     SSH Server Information."
-	echo "     + svr-host: SSH Server host."
-	echo "     + svr-port: SSH Server port."
-	echo " -t: Use to 'disconnect'."
-	echo "     Remote Port Forrwarding Unique Information."
-	echo "     + rport: remote port"
-	echo "     + username: account username."
-	echo "     + svr-host: SSH Server host."
-	echo "     + svr-port: SSH Server port."
-	echo " -u: Use to 'connect'."
-	echo "     SSH Server user name"
 	echo " -v: verbose"
 }
 
@@ -64,19 +93,37 @@ check_port(){
 	fi
 }
 
-declare -A __ARGUMENTS__
+declare -A __args__
 __command__=""
 __verbose__=0
+
 while [ ! -z "$1" ];
 do
 	case "$1" in
-		-h | --help)
+		-h)
 			help
+			exit 0
+			;;
+		--help-*)
+			case "${1:7:${#1}}" in
+				connect)
+					help-connect 1
+					;;
+				disconnect)
+					help-disconnect 1
+					;;
+				list)
+					help-list 1
+					;;
+				*)
+					;;
+			esac
 			exit 0
 			;;
 		-p)
 			shift
 			__userpwd__=$1
+			__args__["userpwd"]=1
 			;;
 		-r)
 			shift
@@ -95,6 +142,8 @@ do
 			__host__=${remote[1]}
 			__port__=${remote[2]}
 
+			__args__["remote"]=1
+
 			;;
 		-s)
 			shift
@@ -110,6 +159,8 @@ do
 			
 			__svr_host__=${server[0]}
 			__svr_port__=${server[1]}
+
+			__args__["server"]=1
 
 			;;
 		-t)
@@ -129,10 +180,14 @@ do
 			__username__=${server[1]}
 			__svr_host__=${server[2]}
 			__svr_port__=${server[3]}
+
+			__args__["target"]=1
 			;;
 		-u)
 			shift
 			__username__=$1
+
+			__args__["username"]=1
 			;;
 		-v)
 			__verbose__=1
@@ -213,9 +268,21 @@ list(){
 
 case "${__command__}" in
 	connect)
+		if [ -z ${__args__['remote']} ] || [ -z ${__args__['server']} ] || [ -z ${__args__['username']} ] || [ -z ${__args__['userpwd']} ];
+		then
+			help-connect 1
+			exit 1
+		fi
+
 		connect
 		;;
 	disconnect)
+		if [ -z ${__args__['target']} ]; 
+		then
+			help-disconnect 1
+			exit 1
+		fi
+
 		disconnect
 		;;
 	list)
