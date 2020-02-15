@@ -153,7 +153,7 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
 
             // #2. Remote Port Forwarding 추가
             String message = createRemotePortForwarding(session, remotePort, serviceHost, servicePort);
-            return new Result<String>(GET_SESSION_KEY.apply(session), true).setMessage(message);
+            return new Result<String>(String.join("/", String.valueOf(remotePort), GET_SESSION_KEY.apply(session)), true).setMessage(message);
         } catch (JSchException e) {
             String errorMsg = String.format("SSH 연결 시도 중 에러가 발생하였습니다. session: %s, userinfo: %s, 원인: %s", session, userInfo, e.getMessage());
             logger.warn(errorMsg, e);
@@ -213,7 +213,7 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
                 // Remote Port Forwarding 추가
                 session.setPortForwardingR(remotePort, host, port);
 
-                return null;
+                return "Created";
             }
         }
     }
@@ -277,20 +277,20 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
      * @see open.commons.tools.ssh.service.ISshTunnelingService#disconnect(java.lang.String, int)
      */
     @Override
-    public Result<Boolean> disconnect(@NotNull String sessionId, @Min(1) @Max(65535) int remotePort) {
-        Result<Boolean> result = null;
+    public Result<String> disconnect(@NotNull String sessionId, @Min(1) @Max(65535) int remotePort) {
+        Result<String> result = null;
         synchronized (mutexSessions) {
             try {
                 // sessionId에 Remote Port Forwaring이 등록되어 있는지 확인.
                 if (remotePortForwardings.containsKey(sessionId)) {
                     Set<Integer> rPorts = remotePortForwardings.get(sessionId);
                     if (rPorts == null) {
-                        result = new Result<Boolean>().setMessage("There is no remote ports of session. session-id: %s", sessionId);
+                        result = new Result<String>().setMessage("There is no remote ports of session. session-id: %s", sessionId);
                     } else if (rPorts.contains(remotePort)) {
                         deleteRemotPortForawrding(sessions.get(sessionId), remotePort);
-                        result = new Result<Boolean>(true, true);
+                        result = new Result<String>(String.join("/", String.valueOf(remotePort), sessionId), true).setMessage("Deleted");
                     } else {
-                        result = new Result<Boolean>().setMessage("There is no remote port of session. session-id: %s, port: %s", sessionId, remotePort);
+                        result = new Result<String>().setMessage("There is no remote port of session. session-id: %s, port: %s", sessionId, remotePort);
                     }
                 } else
                 // Session 목록에는 존재하는경우 Session 에서 Remote Port Forwarding 정보를 불러와 매핑 정보를 추가
@@ -301,18 +301,18 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
                     String[] rPortFwd = session.getPortForwardingR();
                     if (rPortFwd == null || rPortFwd.length < 1) {
                         disconnectSession(session);
-                        result = new Result<Boolean>().setMessage("There is no remote ports of session. session-id: %s", sessionId);
+                        result = new Result<String>().setMessage("There is no remote ports of session. session-id: %s", sessionId);
                     } else {
                         rebuildRemotePortForwarding(session);
                         return disconnect(sessionId, remotePort);
                     }
                 } else {
-                    result = new Result<Boolean>().setMessage("There is no sessionId. session-id: %s", sessionId);
+                    result = new Result<String>().setMessage("There is no sessionId. session-id: %s", sessionId);
                 }
             } catch (JSchException e) {
                 String errorMsg = String.format("SSH 연결 제거 중 에러가 발생하였습니다. session: %s, remote-port: %s, 원인: %s", sessionId, remotePort, e.getMessage());
                 logger.warn(errorMsg, e);
-                return new Result<Boolean>().setMessage(errorMsg);
+                return new Result<String>().setMessage(errorMsg);
             }
         }
         return result;

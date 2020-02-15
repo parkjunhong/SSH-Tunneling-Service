@@ -92,7 +92,7 @@ public interface ISshTunnelingService {
      * @version _._._
      * @author Park_Jun_Hong_(fafanmama_at_naver_com)
      */
-    public Result<Boolean> disconnect(@NotNull String sessionId, @Min(1) @Max(65535) int remotePort);
+    public Result<String> disconnect(@NotNull String sessionId, @Min(1) @Max(65535) int remotePort);
 
     /**
      * 모든 Remote Port Forwarding 정보를 제공한다. <br>

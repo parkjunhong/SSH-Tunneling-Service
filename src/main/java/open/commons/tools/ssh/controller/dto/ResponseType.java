@@ -39,7 +39,7 @@ import open.commons.spring.web.annotation.RequestValueSupported;
  * @author Park_Jun_Hong_(fafanmama_at_naver_com)
  */
 @RequestValueSupported
-public enum RemotePortFwdListType {
+public enum ResponseType {
     /** Plain */
     PLAIN("plain"), //
     /** JSON */
@@ -49,13 +49,13 @@ public enum RemotePortFwdListType {
 
     private String type;
 
-    private RemotePortFwdListType(String type) {
+    private ResponseType(String type) {
         this.type = type;
     }
 
     /**
      *
-     * @return a string of an instance of {@link RemotePortFwdListType}
+     * @return a string of an instance of {@link ResponseType}
      */
     public String get() {
         return this.type;
@@ -64,40 +64,40 @@ public enum RemotePortFwdListType {
     /**
      * 
      * @param type
-     *            a string for {@link RemotePortFwdListType} instance.
+     *            a string for {@link ResponseType} instance.
      *
-     * @return an instance of {@link RemotePortFwdListType}
+     * @return an instance of {@link ResponseType}
      *
      * @see #get(String, boolean)
      */
-    public static RemotePortFwdListType get(String type) {
+    public static ResponseType get(String type) {
         return get(type, false);
     }
 
     /**
      *
      * @param type
-     *            a string for an instance of {@link RemotePortFwdListType}.
+     *            a string for an instance of {@link ResponseType}.
      * @param ignoreCase
      *            ignore <code><b>case-sensitive</b></code> or not.
      *
-     * @return an instance of {@link RemotePortFwdListType}
+     * @return an instance of {@link ResponseType}
      */
     @RequestValueConverter(hasIgnoreCase = true)
-    public static RemotePortFwdListType get(String type, boolean ignoreCase) {
+    public static ResponseType get(String type, boolean ignoreCase) {
 
         if (type == null) {
             throw new IllegalArgumentException("'type' MUST NOT be null. input: " + type);
         }
 
         if (ignoreCase) {
-            for (RemotePortFwdListType value : values()) {
+            for (ResponseType value : values()) {
                 if (value.type.equalsIgnoreCase(type)) {
                     return value;
                 }
             }
         } else {
-            for (RemotePortFwdListType value : values()) {
+            for (ResponseType value : values()) {
                 if (value.type.equals(type)) {
                     return value;
                 }
@@ -105,14 +105,14 @@ public enum RemotePortFwdListType {
         }
 
         throw new IllegalArgumentException(
-                "Unexpected 'type' value of 'RemotePortFwdListType'. expected: " + values0() + " & Ignore case-sensitive: " + ignoreCase + ", input: " + type);
+                "Unexpected 'type' value of 'ResponseType'. expected: " + values0() + " & Ignore case-sensitive: " + ignoreCase + ", input: " + type);
     }
 
     private static List<String> values0() {
 
         List<String> valuesStr = new ArrayList<>();
 
-        for (RemotePortFwdListType value : values()) {
+        for (ResponseType value : values()) {
             valuesStr.add(value.get());
         }
 
