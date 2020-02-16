@@ -24,7 +24,7 @@
  * 
  */
 
-package open.commons.tools.ssh.controller.servlet.method.annotation;
+package open.commons.tools.ssh.servlet.method.annotation;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
