@@ -2,8 +2,8 @@
 
 #
 # @Author : Park Jun-Hong (parkjunhong77@gmail.com)
-# @License: MIT. License
-# @title  : SSH Tunneling Provider usign Remote Port Forwarding.
+# @License: Apache License 2.0
+# @title  : SSH Tunneling Provider by using Remote Port Forwarding.
 #           
 # Tunneling using SSH Remote Port Forwarding.
 # command: ssh -R {remote-port}:{service-host}:{service-port} {username)@{ssh-server-host} -p {ssh-server-port}
