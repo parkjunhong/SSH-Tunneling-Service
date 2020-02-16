@@ -236,7 +236,7 @@ DATA_JSON=" \
 }'"
 # @param $1 {string} arguments name
 connect(){
-	local header="-H 'Content-Type: application/json;charset=UTF-8'"
+	local header="-H 'Content-Type: application/json;charset=UTF-8' -H 'Accept: text/plain'"
 	local data=$(printf "${DATA_JSON}" "${__username__}" "${__userpwd__}" "${__svr_host__}" "${__svr_port__}" "${__rport__}" )
 	
 	if [ ${__verbose__} -eq 1 ];
