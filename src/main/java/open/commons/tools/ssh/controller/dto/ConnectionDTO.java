@@ -35,7 +35,7 @@ import org.springframework.validation.annotation.Validated;
 /**
  * SSH Tunneling 연결 요청 정보
  * 
-  * <a href="http://tools.ietf.org/html/rfc7159">JSON</a> source: <br>
+  * <a href="http://tools.ietf.org/html/rfc7159">APPLICATION_JSON</a> source: <br>
   * <pre>
   * 
   * [CASE - 0]

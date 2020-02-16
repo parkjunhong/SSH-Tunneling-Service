@@ -26,6 +26,9 @@
 
 package open.commons.tools.ssh.service.impl;
 
+import org.slf4j.Logger;
+import org.springframework.validation.annotation.Validated;
+
 import com.jcraft.jsch.UserInfo;
 
 /**
@@ -34,7 +37,10 @@ import com.jcraft.jsch.UserInfo;
  * @version _._._
  * @author Park_Jun_Hong_(fafanmama_at_naver_com)
  */
+@Validated
 public class SshUserInfo implements UserInfo {
+
+    private final Logger logger;
 
     private final String password;
     private final String passPhrase;
@@ -45,11 +51,14 @@ public class SshUserInfo implements UserInfo {
      *            TODO
      * @param passPhrase
      *            TODO
+     * @param logger
+     *            TODO
      * @since 2020. 2. 14.
      */
-    public SshUserInfo(String password, String passPhrase) {
+    public SshUserInfo(String password, String passPhrase, Logger logger) {
         this.password = password;
         this.passPhrase = passPhrase;
+        this.logger = logger;
     }
 
     /**
@@ -112,11 +121,11 @@ public class SshUserInfo implements UserInfo {
      * @since 2020. 2. 14.
      * @author Park_Jun_Hong_(fafanmama_at_naver_com)
      *
-     * @see com.jcraft.jsch.UserInfo#promptPassword(java.lang.String)
+     * @see com.jcraft.jsch.UserInfo#promptPassphrase(java.lang.String)
      */
     @Override
-    public boolean promptPassword(String message) {
-//        System.out.println(" > promptPassword: " + message);
+    public boolean promptPassphrase(String message) {
+        logger.info(" > promptPassPhrase: {}", message);
         return true;
     }
 
@@ -136,11 +145,11 @@ public class SshUserInfo implements UserInfo {
      * @since 2020. 2. 14.
      * @author Park_Jun_Hong_(fafanmama_at_naver_com)
      *
-     * @see com.jcraft.jsch.UserInfo#promptPassphrase(java.lang.String)
+     * @see com.jcraft.jsch.UserInfo#promptPassword(java.lang.String)
      */
     @Override
-    public boolean promptPassphrase(String message) {
-        System.out.println(" > promptPassPhrase: " + message);
+    public boolean promptPassword(String message) {
+        logger.info(" > promptPassword: {}", message);
         return true;
     }
 
@@ -164,7 +173,7 @@ public class SshUserInfo implements UserInfo {
      */
     @Override
     public boolean promptYesNo(String message) {
-        System.out.println(" > promptYesNo: " + message);
+        logger.info(" > promptYesNo: {}", message);
         return true;
     }
 
@@ -187,7 +196,7 @@ public class SshUserInfo implements UserInfo {
      */
     @Override
     public void showMessage(String message) {
-        System.out.println(" > showMessage: " + message);
+        logger.debug(" > showMessage: {}", message);
     }
 
     /**
@@ -210,9 +219,7 @@ public class SshUserInfo implements UserInfo {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("SshUserInfo [password=");
-        builder.append(password);
-        builder.append(", passPhrase=");
+        builder.append("SshUserInfo [passPhrase=");
         builder.append(passPhrase);
         builder.append("]");
         return builder.toString();

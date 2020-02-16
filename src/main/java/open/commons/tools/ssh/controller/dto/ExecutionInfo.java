@@ -43,7 +43,7 @@ import open.commons.spring.web.annotation.RequestValueSupported;
 /**
  * SSH Tunneling 연결 실행 예약 정보
  * 
- * <a href="http://tools.ietf.org/html/rfc7159">JSON</a> source: <br>
+ * <a href="http://tools.ietf.org/html/rfc7159">APPLICATION_JSON</a> source: <br>
  * 
  * <pre>
  * 

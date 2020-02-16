@@ -141,27 +141,29 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
         Session session = null;
         UserInfo userInfo = null;
         try {
-            // #1. Sessiong 생성
-            session = getSession(username, sshServerHost, sshServerPort);
+            synchronized (mutexSessions) {
+                // #1. Sessiong 생성
+                session = getSession(username, sshServerHost, sshServerPort);
 
-            if (!session.isConnected()) {
-                userInfo = new SshUserInfo(userPwd, "Are you sure you want to continue connecting");
-                session.setUserInfo(userInfo);
+                if (!session.isConnected()) {
+                    userInfo = new SshUserInfo(userPwd, "Are you sure you want to continue connecting", logger);
+                    session.setUserInfo(userInfo);
 
-                try {
-                    session.connect();
-                } catch (JSchException e) {
-                    if (!session.isConnected()) {
-                        disconnectSession(session);
+                    try {
+                        session.connect();
+                    } catch (JSchException e) {
+                        if (!session.isConnected()) {
+                            disconnectSession(session);
+                        }
+
+                        throw e;
                     }
-
-                    throw e;
                 }
-            }
 
-            // #2. Remote Port Forwarding 추가
-            String message = createRemotePortForwarding(session, remotePort, serviceHost, servicePort);
-            return new Result<String>(String.join("/", String.valueOf(remotePort), GET_SESSION_KEY.apply(session)), true).setMessage(message);
+                // #2. Remote Port Forwarding 추가
+                String message = createRemotePortForwarding(session, remotePort, serviceHost, servicePort);
+                return new Result<String>(String.join("/", String.valueOf(remotePort), GET_SESSION_KEY.apply(session)), true).setMessage(message);
+            }
         } catch (JSchException e) {
             String errorMsg = String.format("SSH 연결 시도 중 에러가 발생하였습니다. session: %s, userinfo: %s, 원인: %s", session, userInfo, e.getMessage());
             logger.warn(errorMsg, e);
@@ -211,7 +213,18 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
                 // ${ssh-server-port}
 
                 // Remote Port Forwarding 추가
-                session.setPortForwardingR(remotePort, host, port);
+                try {
+                    session.setPortForwardingR(remotePort, host, port);
+                } catch (JSchException e) {
+                    logger.warn("Remote Port Forwarding 정보를 생성하는 도중 에러가 발생하였습니다. 원인: {}", e.getMessage());
+
+                    Set<Integer> rPorts = remotePortForwardings.get(GET_SESSION_KEY.apply(session));
+                    if (rPorts == null || rPorts.size() < 1) {
+                        disconnectSession(session);
+                    }
+
+                    throw e;
+                }
 
                 String sessionId = GET_SESSION_KEY.apply(session);
                 Set<Integer> rPorts = remotePortForwardings.get(sessionId);
@@ -246,7 +259,7 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
      * @version _._._
      * @author Park_Jun_Hong_(fafanmama_at_naver_com)
      */
-    private void deleteRemotPortForawrding(Session session, int remotePort) throws JSchException {
+    private void deleteRemotePortForawrding(Session session, int remotePort) throws JSchException {
 
         session.delPortForwardingR(remotePort);
 
@@ -295,7 +308,7 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
                     if (rPorts == null) {
                         throw new RemotePortNotFoundException("There is no remote ports of session. session-id: %s", sessionId);
                     } else if (rPorts.contains(remotePort)) {
-                        deleteRemotPortForawrding(sessions.get(sessionId), remotePort);
+                        deleteRemotePortForawrding(sessions.get(sessionId), remotePort);
                         result = new Result<String>(String.join("/", String.valueOf(remotePort), sessionId), true).setMessage("Deleted");
                     } else {
                         throw new RemotePortNotFoundException("There is no remote port of session. session-id: %s, port: %s", sessionId, remotePort);

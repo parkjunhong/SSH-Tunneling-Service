@@ -29,6 +29,8 @@ package open.commons.tools.ssh.controller.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.MediaType;
+
 import open.commons.spring.web.annotation.RequestValueConverter;
 import open.commons.spring.web.annotation.RequestValueSupported;
 
@@ -39,80 +41,83 @@ import open.commons.spring.web.annotation.RequestValueSupported;
  * @author Park_Jun_Hong_(fafanmama_at_naver_com)
  */
 @RequestValueSupported
-public enum ResponseType {
+public enum AcceptType {
     /** Plain */
-    PLAIN("plain"), //
-    /** JSON */
-    JSON("json"), //
-
+    TEXT_PLAIN("text/plain"), //
+    /** APPLICATION_JSON */
+    APPLICATION_JSON("application/json"), //
     ;
 
     private String type;
 
-    private ResponseType(String type) {
+    private AcceptType(String type) {
         this.type = type;
     }
 
     /**
      *
-     * @return a string of an instance of {@link ResponseType}
+     * @return a string of an instance of {@link AcceptType}
      */
     public String get() {
         return this.type;
     }
 
+    public MediaType mediaType() {
+        String[] mt = this.type.split("/");
+        return new MediaType(mt[0], mt[1]);
+    }
+
     /**
      * 
      * @param type
-     *            a string for {@link ResponseType} instance.
+     *            a string for {@link AcceptType} instance.
      *
-     * @return an instance of {@link ResponseType}
+     * @return an instance of {@link AcceptType}
      *
      * @see #get(String, boolean)
      */
-    public static ResponseType get(String type) {
+    public static AcceptType get(String type) {
         return get(type, false);
     }
 
     /**
      *
      * @param type
-     *            a string for an instance of {@link ResponseType}.
+     *            a string for an instance of {@link AcceptType}.
      * @param ignoreCase
      *            ignore <code><b>case-sensitive</b></code> or not.
      *
-     * @return an instance of {@link ResponseType}
+     * @return an instance of {@link AcceptType}
      */
     @RequestValueConverter(hasIgnoreCase = true)
-    public static ResponseType get(String type, boolean ignoreCase) {
+    public static AcceptType get(String type, boolean ignoreCase) {
 
         if (type == null) {
             throw new IllegalArgumentException("'type' MUST NOT be null. input: " + type);
         }
 
         if (ignoreCase) {
-            for (ResponseType value : values()) {
+            for (AcceptType value : values()) {
                 if (value.type.equalsIgnoreCase(type)) {
                     return value;
                 }
             }
         } else {
-            for (ResponseType value : values()) {
+            for (AcceptType value : values()) {
                 if (value.type.equals(type)) {
                     return value;
                 }
             }
         }
 
-        throw new IllegalArgumentException(
-                "Unexpected 'type' value of 'ResponseType'. expected: " + values0() + " & Ignore case-sensitive: " + ignoreCase + ", input: " + type);
+        throw new IllegalArgumentException("Unexpected 'type' value of 'AcceptType'. expected: " + values0() + " & Ignore case-sensitive: " + ignoreCase + ", input: " + type);
     }
 
     private static List<String> values0() {
 
         List<String> valuesStr = new ArrayList<>();
 
-        for (ResponseType value : values()) {
+        for (AcceptType value : values()) {
             valuesStr.add(value.get());
         }
 
