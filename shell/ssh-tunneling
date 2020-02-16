@@ -223,7 +223,7 @@ fi
 # %s: Header
 # %s: Request Body
 # %s: API
-CURL_CMD="curl -X %s %s %s http://127.0.0.1:18080/sshtcm/connections%s?rtype=plain"
+CURL_CMD="curl -X %s %s %s http://127.0.0.1:18080/sshtcm/connections%s"
 DATA_JSON=" \
 -d '{ \
 	\"tunneling\": { \
@@ -249,21 +249,23 @@ connect(){
 
 # @param $1 {string} arguments name
 disconnect(){
+	local header="-H 'Accept: text/plain'"
 	if [ ${__verbose__} -eq 1 ];
 	then
-		printf "${CURL_CMD}\n" "DELETE" "/${__username__}:${__svr_host__}:${__svr_port__}/${__rport__}"
+		printf "${CURL_CMD}\n" "DELETE" "${header}" " " "/${__username__}:${__svr_host__}:${__svr_port__}/${__rport__}"
 	fi
-	eval $(printf "${CURL_CMD}" "DELETE" " " " " "/${__username__}:${__svr_host__}:${__svr_port__}/${__rport__}")
+	eval $(printf "${CURL_CMD}" "DELETE" "${header}" " " "/${__username__}:${__svr_host__}:${__svr_port__}/${__rport__}")
 }
 
 # @param $1 {string} arguments name
 list(){
+	local header="-H 'Accept: text/plain'"
 	if [ ${__verbose__} -eq 1 ];
 	then
-		printf "${CURL_CMD}\n" "GET" ""
+		printf "${CURL_CMD}\n" "GET" "${header}"
 	fi
 	
-	eval $(printf "${CURL_CMD}" "GET")
+	eval $(printf "${CURL_CMD}" "GET" "${header}")
 }
 
 case "${__command__}" in
