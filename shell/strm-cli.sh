@@ -177,6 +177,8 @@ do
 				then
 						echo
 						echo " > Please, enter a password !!!"
+				else
+						break
 				fi
 			done
 

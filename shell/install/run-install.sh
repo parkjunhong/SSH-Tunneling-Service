@@ -605,3 +605,4 @@ echo
 echo "bye~"
 echo
 
+exit 0
