@@ -3,7 +3,7 @@
 #
 # @Author : Park Jun-Hong (parkjunhong77@gmail.com)
 # @License: Apache License 2.0
-# @title  : SSH Tunneling Provider by using Remote Port Forwarding.
+# @title  : SSH Tunneling Request & Manage by using Remote Port Forwarding.
 #           
 # Tunneling using SSH Remote Port Forwarding.
 # command: ssh -R {remote-port}:{service-host}:{service-port} {username)@{ssh-server-host} -p {ssh-server-port}
@@ -16,16 +16,15 @@ help-connect(){
 	fi
 
 	echo " connect   : connect to ssh server for remote port forwarding."
-	echo " e.g.) ssh-tcm.sh connect -r <rport>:<host>:<port> -s <username>/<userpwd>@<svr-host> -p <svr-port> -v"
+	echo " e.g.) ssh-tcm.sh connect -r <rport>:<host>:<port> -s <username>@<svr-host> -p <svr-port> -v"
 	echo " [options]"
-	echo " -p: SSH Server port"
+	echo " -p: SSH Server port."
 	echo " -r: Remote Port Forwarding(RPF) Information."
 	echo "     + rport : remote port."
 	echo "     + host  : RFP destination host."
 	echo "     + port  : RFP destination port."
 	echo " -s: SSH Server Information."
-	echo "     + username: SSH Server Account username"
-	echo "     + userpwd : SSH Server Account userpwd"
+	echo "     + username: SSH Server Account username."
 	echo "     + svr-host: SSH Server host."
 }
 
@@ -39,7 +38,7 @@ help-disconnect(){
 	echo " e.g.) ssh-tcm.sh disconnect -t <rport>:<username>@<svr-host>:<svr-port>"
 	echo " [options]"
 	echo " -t: Remote Port Forrwarding Unique Information."
-	echo "     + rport: remote port"
+	echo "     + rport: remote port."
 	echo "     + username: account username."
 	echo "     + svr-host: SSH Server host."
 	echo "     + svr-port: SSH Server port."
@@ -74,7 +73,8 @@ help(){
 	help-disconnect
 	echo
 	help-list
-	echo 
+	echo
+	echo " -c: Context Path of RESTful API. Default: sshtrm. (SSH Tunneling Request & Manage)"
 	echo " -v: verbose"
 }
 
@@ -96,10 +96,18 @@ __verbose__=0
 # Default SSH port
 __svr_port__=22
 __args__["svr-port"]=1
-
+# Default context path
+__context__="sshtrm"
 while [ ! -z "$1" ];
 do
 	case "$1" in
+		-c)
+			shift
+			if [ ! -z "$1" ];
+			then
+				__context__="$1"
+			fi
+			;;
 		-h)
 			help
 			exit 0
@@ -238,7 +246,7 @@ fi
 # %s: Header
 # %s: Request Body
 # %s: API
-CURL_CMD="curl -X %s %s %s http://127.0.0.1:18080/sshtcm/connections%s"
+CURL_CMD="curl -X %s %s %s http://127.0.0.1:18080/${__context__}/connections%s"
 DATA_JSON=" \
 -d '{ \
 	\"tunneling\": { \

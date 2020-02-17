@@ -5,7 +5,7 @@ server:
   address: 0.0.0.0
   port: 18080
   servlet:
-    context-path: /sshtcm
+    context-path: /sshtrm # SSH Tunneling Request & Manage
   
 spring:
   application:

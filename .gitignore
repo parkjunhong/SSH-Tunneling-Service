@@ -59,3 +59,6 @@ src/test/**
 
 # vscode
 .vscode/
+
+# custom
+build-deploy.sh
