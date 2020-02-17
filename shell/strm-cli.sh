@@ -16,7 +16,7 @@ help-connect(){
 	fi
 
 	echo " connect   : connect to ssh server for remote port forwarding."
-	echo " e.g.) ssh-tcm.sh connect -r <rport>:<host>:<port> -s <username>@<svr-host> -p <svr-port> -v"
+	echo " e.g.) strm-cli.sh connect -r <rport>:<host>:<port> -s <username>@<svr-host> -p <svr-port> -v"
 	echo " [options]"
 	echo " -p: SSH Server port."
 	echo " -r: Remote Port Forwarding(RPF) Information."
@@ -35,7 +35,7 @@ help-disconnect(){
 	fi
 	
 	echo " disconnect: cancel a remote port forwarding."
-	echo " e.g.) ssh-tcm.sh disconnect -t <rport>:<username>@<svr-host>:<svr-port>"
+	echo " e.g.) strm-cli.sh disconnect -t <rport>:<username>@<svr-host>:<svr-port>"
 	echo " [options]"
 	echo " -t: Remote Port Forrwarding Unique Information."
 	echo "     + rport: remote port."
@@ -51,7 +51,7 @@ help-list(){
 	fi
 
 	echo " list      : provide remote port forwarding information."
-	echo " e.g.) ssh-tcm.sh list"
+	echo " e.g.) strm-cli.sh list"
 }
 
 #
@@ -65,7 +65,7 @@ help(){
 	fi
 	
 	echo "Usage:"
-	echo " ssh-tcm.sh <command> <options>"
+	echo " strm-cli.sh <command> <options>"
 	echo
 	echo "[Command]"
 	help-connect

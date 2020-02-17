@@ -20,7 +20,7 @@
 		<encoding>UTF-8</encoding>
 
 		<!-- !!! 프로젝트에 맞춰 변경할 것 !!! -->
-		<build.finalName>ssh-tcm</build.finalName>
+		<build.finalName>strm</build.finalName>
 		<!-- !!! 프로젝트에 맞춰 변경할 것 !!! -->
 		<manifest.mainClass>open.commons.tools.ssh.ApplicationMain</manifest.mainClass>
 		<deploy.directory>deploy</deploy.directory>

@@ -10,7 +10,7 @@ Writing on [SSH Tunneling API](https://documenter.getpostman.com/view/474408/SzK
 
 __connect__   : connect to ssh server for remote port forwarding.
 ```bash
-ssh-tcm.sh connect -r <rport>:<host>:<port> -s <svr-host>:<svr-port> -u <username> -p <userpwd> -v
+strm-cli.sh connect -r <rport>:<host>:<port> -s <svr-host>:<svr-port> -u <username> -p <userpwd> -v
 
 [options]
 -p: SSH Server user password
@@ -26,7 +26,7 @@ ssh-tcm.sh connect -r <rport>:<host>:<port> -s <svr-host>:<svr-port> -u <usernam
 
 __disconnect__: cancel a remote port forwarding.
 ```bash
-ssh-tcm.sh disconnect -t <rport>:<username>@<svr-host>:<svr-port>
+strm-cli.sh disconnect -t <rport>:<username>@<svr-host>:<svr-port>
 
 [options]
 -t: Remote Port Forrwarding Unique Information.
@@ -38,7 +38,7 @@ ssh-tcm.sh disconnect -t <rport>:<username>@<svr-host>:<svr-port>
 
 __list__      : provide remote port forwarding information.
 ```bash
-ssh-tcm.sh list
+strm-cli.sh list
 ```
 Edited 2020-02-16, Korea.
 
