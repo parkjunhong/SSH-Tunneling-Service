@@ -177,16 +177,6 @@ do
 				then
 						echo
 						echo " > Please, enter a password !!!"
-				else
-					echo
-					read -p " > Continue to process? (yes/no) " answer
-					if [ "$(echo ${answer} | tr [:upper:] [:lower:])" != "yes" ];
-					then
-						echo " > Bye~"
-						exit 0
-					else
-						break
-					fi
 				fi
 			done
 
