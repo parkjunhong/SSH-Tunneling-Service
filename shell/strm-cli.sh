@@ -18,7 +18,6 @@ help-connect(){
 	echo " connect   : connect to ssh server for remote port forwarding."
 	echo " e.g.) strm-cli.sh connect -r <rport>:<host>:<port> -s <username>@<svr-host> -p <svr-port> -v"
 	echo " [options]"
-	echo " -p: SSH Server port."
 	echo " -r: Remote Port Forwarding(RPF) Information."
 	echo "     + rport : remote port."
 	echo "     + host  : RFP destination host."
@@ -26,6 +25,7 @@ help-connect(){
 	echo " -s: SSH Server Information."
 	echo "     + username: SSH Server Account username."
 	echo "     + svr-host: SSH Server host."
+	echo " -p: SSH Server port."	
 }
 
 help-disconnect(){
