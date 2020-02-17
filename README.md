@@ -10,18 +10,18 @@ Writing on [SSH Tunneling API](https://documenter.getpostman.com/view/474408/SzK
 
 __connect__   : connect to ssh server for remote port forwarding.
 ```bash
-strm-cli.sh connect -r <rport>:<host>:<port> -s <svr-host>:<svr-port> -u <username> -p <userpwd> -v
+strm-cli.sh connect -r <rport>:<host>:<port> -s <username>@<svr-host> -p <svr-port> -v
 
 [options]
--p: SSH Server user password
 -r: Remote Port Forwarding(RPF) Information.
     + rport : remote port.
     + host  : RFP destination host.
     + port  : RFP destination port.
 -s: SSH Server Information.
+    + username: SSH Server user name.
     + svr-host: SSH Server host.
     + svr-port: SSH Server port.
--u: SSH Server user name
+-p: SSH Server port    
 ```
 
 __disconnect__: cancel a remote port forwarding.
