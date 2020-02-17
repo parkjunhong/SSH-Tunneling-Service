@@ -270,6 +270,8 @@ copy_service(){
 	
 	sudo cp -uf $SVC_NAME $SVC_DIR/
 	echo "sudo cp -uf $SVC_NAME $SVC_DIR/"
+	sudo chmod +x $SVC_DIR/$SVC_NAME
+	echo "sudo chmod +x $SVC_DIR/$SVC_NAME"
 }
 
 ## 서비스 등록
