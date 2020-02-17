@@ -497,6 +497,12 @@ copy_files(){
 	do
 		{
 			if [ -f "$SOURCE/$file" ]; then
+				case ${file} in
+					"strm-cli.sh")
+						
+						;;
+				esac
+			
 				cp $SOURCE/$file $TARGET/
 				echo "[SUCCESS] cp $SOURCE/$file $TARGET/" 
 			else

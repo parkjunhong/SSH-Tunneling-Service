@@ -97,7 +97,7 @@ __verbose__=0
 __svr_port__=22
 __args__["svr-port"]=1
 # Default context path
-__context__="sshtrm"
+__context__="${server.servlet.contextpath}"
 while [ ! -z "$1" ];
 do
 	case "$1" in
