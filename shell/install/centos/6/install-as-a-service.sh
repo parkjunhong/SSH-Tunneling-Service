@@ -251,12 +251,12 @@ remove_service(){
 	then
 		echo "FORCE to remove a old 'Service Unit' file."
 		echo 
-		echo "sudo chkconfig $SVC_NAME off"
 		sudo chkconfig $SVC_NAME off
-		echo "sudo chkconfig --del $SVC_NAME"
+		echo "sudo chkconfig $SVC_NAME off"
 		sudo chkconfig --del $SVC_NAME
-		echo "sudo rm -rf  $SVC_DIR/$SVC_NAME"
+		echo "sudo chkconfig --del $SVC_NAME"
 		sudo rm -rf  $SVC_DIR/$SVC_NAME	
+		echo "sudo rm -rf  $SVC_DIR/$SVC_NAME"
 	fi
 }
 
@@ -268,8 +268,8 @@ copy_service(){
 	SVC_NAME=$1
 	SVC_DIR=$2
 	
-	echo "sudo cp -uf $SVC_NAME $SVC_DIR/"
 	sudo cp -uf $SVC_NAME $SVC_DIR/
+	echo "sudo cp -uf $SVC_NAME $SVC_DIR/"
 }
 
 ## 서비스 등록
@@ -279,8 +279,8 @@ enable_service(){
 	
 	SVC_NAME=$1
 	
-	echo "sudo chkconfig --add $SVC_NAME"
 	sudo chkconfig --add $SVC_NAME
+	echo "sudo chkconfig --add $SVC_NAME"
 }
 
 ## 서비스 시작
@@ -290,8 +290,8 @@ start_service(){
 	
 	SVC_NAME=$1
 	
-	echo "service $SVC_NAME start"
-	service $SVC_NAME start
+	sudo service $SVC_NAME start
+	echo "sudo service $SVC_NAME start"
 }
 	
 ## 서비스 상태 조회
@@ -302,8 +302,8 @@ status_service(){
 	
 	SVC_NAME=$1
 	
-	echo "service $SVC_NAME status"
-	service $SVC_NAME status
+	sudo service $SVC_NAME status
+	echo "sudo service $SVC_NAME status"
 }
 
 ## 서비스 정지
@@ -316,8 +316,8 @@ stop_service(){
 	STATUS_MSG=$(service $SVC_NAME status | grep [p]id)
 	if [ "$STATUS_MSG" != "" ]
 	then
-		echo "service $SVC_NAME stop"
-		service $SVC_NAME stop
+		sudo service $SVC_NAME stop
+		echo "sudo service $SVC_NAME stop"
 	else
 		echo "No running"
 	fi
