@@ -16,21 +16,17 @@ help-connect(){
 	fi
 
 	echo " connect   : connect to ssh server for remote port forwarding."
-	echo " e.g.) ssh-tcm.sh connect -r <rport>:<host>:<port> -s <svr-host>:<svr-port> -u <username> -p <userpwd> -v"
+	echo " e.g.) ssh-tcm.sh connect -r <rport>:<host>:<port> -s <username>/<userpwd>@<svr-host> -p <svr-port> -v"
 	echo " [options]"
-	echo " -p: Use to 'connect'."
-	echo "     SSH Server user password"
-	echo " -r: Use to 'connect'."
-	echo "     Remote Port Forwarding(RPF) Information."
+	echo " -p: SSH Server port"
+	echo " -r: Remote Port Forwarding(RPF) Information."
 	echo "     + rport : remote port."
 	echo "     + host  : RFP destination host."
 	echo "     + port  : RFP destination port."
-	echo " -s: Use to 'connect'."
-	echo "     SSH Server Information."
+	echo " -s: SSH Server Information."
+	echo "     + username: SSH Server Account username"
+	echo "     + userpwd : SSH Server Account userpwd"
 	echo "     + svr-host: SSH Server host."
-	echo "     + svr-port: SSH Server port."
-	echo " -u: Use to 'connect'."
-	echo "     SSH Server user name"
 }
 
 help-disconnect(){
@@ -42,8 +38,7 @@ help-disconnect(){
 	echo " disconnect: cancel a remote port forwarding."
 	echo " e.g.) ssh-tcm.sh disconnect -t <rport>:<username>@<svr-host>:<svr-port>"
 	echo " [options]"
-	echo " -t: Use to 'disconnect'."
-	echo "     Remote Port Forrwarding Unique Information."
+	echo " -t: Remote Port Forrwarding Unique Information."
 	echo "     + rport: remote port"
 	echo "     + username: account username."
 	echo "     + svr-host: SSH Server host."
@@ -94,8 +89,13 @@ check_port(){
 }
 
 declare -A __args__
+# Confirm to arguments.
 __command__=""
+# show log
 __verbose__=0
+# Default SSH port
+__svr_port__=22
+__args__["svr-port"]=1
 
 while [ ! -z "$1" ];
 do
@@ -122,8 +122,11 @@ do
 			;;
 		-p)
 			shift
-			__userpwd__=$1
-			__args__["userpwd"]=1
+			
+			check_port $1 "Invalid SSH Server port"
+
+			__svr_port__=$1
+			__args__["svr-port"]=1
 			;;
 		-r)
 			shift
@@ -147,21 +150,39 @@ do
 			;;
 		-s)
 			shift
-			# -s <svr-host>:<svr-port>
-			IFS="/@:" read -a server <<< "$1"
+			# -s <username>@<svr-host>
+			IFS="/@" read -a server <<< "$1"
 			if [ ${#server[@]} -ne 2 ];
 			then
-				help "Invalid Remote Port Forwarding argument. arg=$1"
+				help "Invalid Remote Port Forwarding argument. (<username>@<svr-host>) arg=$1"
 				exit 1
 			fi
 			
-			check_port ${server[1]} "Invalid SSH Server port"
-			
-			__svr_host__=${server[0]}
-			__svr_port__=${server[1]}
+			__username__=${server[0]}
+			__svr_host__=${server[1]}
+
+			while [ 1 ];
+			do
+				read -s -p " > ${__username__}@${__svr_host__}'s password: " __userpwd__
+
+				if [ -z $"{__userpwd__}" ];
+				then
+						echo
+						echo " > Please, enter a password !!!"
+				else
+					echo
+					read -p " > Continue to process? (yes/no) " answer
+					if [ "$(echo ${answer} | tr [:upper:] [:lower:])" != "yes" ];
+					then
+						echo " > Bye~"
+						exit 0
+					else
+						break
+					fi
+				fi
+			done
 
 			__args__["server"]=1
-
 			;;
 		-t)
 			shift
@@ -169,7 +190,7 @@ do
 			IFS="/@:" read -a server <<< "$1"
 			if [ ${#server[@]} -ne 4 ];
 			then
-				help "Invalid Remote Port Forwarding argument. arg=$1"
+				help "Invalid Remote Port Forwarding argument. (<rport>:<username>@<svr-host>:<svr-host>) arg=$1"
 				exit 1
 			fi
 
@@ -182,12 +203,6 @@ do
 			__svr_port__=${server[3]}
 
 			__args__["target"]=1
-			;;
-		-u)
-			shift
-			__username__=$1
-
-			__args__["username"]=1
 			;;
 		-v)
 			__verbose__=1
@@ -270,7 +285,7 @@ list(){
 
 case "${__command__}" in
 	connect)
-		if [ -z ${__args__['remote']} ] || [ -z ${__args__['server']} ] || [ -z ${__args__['username']} ] || [ -z ${__args__['userpwd']} ];
+		if [ -z ${__args__['remote']} ] || [ -z ${__args__['server']} ] ;
 		then
 			help-connect 1
 			exit 1
