@@ -26,9 +26,11 @@
 
 package open.commons.tools.ssh.service.impl;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -37,7 +39,6 @@ import org.slf4j.LoggerFactory;
 import open.commons.concurrent.Mutex;
 import open.commons.lang.DefaultRunnable;
 import open.commons.tools.ssh.service.SessionUtils;
-import open.commons.utils.ThreadUtils;
 
 import com.jcraft.jsch.Session;
 
@@ -55,7 +56,7 @@ public class SessionHeartBeatChecker extends DefaultRunnable {
     private Mutex mutexSessions = new Mutex("mutex of 'sessions'");
 
     /** {@link Session}이 종료되는 경우 처리하는 함수 */
-    private ConcurrentSkipListSet<Consumer<String>> sessionDisconnectHandles = new ConcurrentSkipListSet<>();
+    private Set<Consumer<String>> sessionDisconnectHandles = new HashSet<>();
 
     /**
      * 
@@ -64,7 +65,17 @@ public class SessionHeartBeatChecker extends DefaultRunnable {
     public SessionHeartBeatChecker() {
     }
 
+    private void fireSessionDisconnection(final String sessionId) {
+        sessions.remove(sessionId);
+        sessionDisconnectHandles.forEach(h -> h.accept(sessionId));
+    }
+
     private boolean get() {
+        try {
+            mutexSessions.wait(Math.max(10, (long) (Math.random() * 30000.0)));
+        } catch (InterruptedException ignored) {
+        }
+
         boolean get = false;
         synchronized (mutexSessions) {
             while (isRunning() && !(get = this.sessions.size() > 0)) {
@@ -73,6 +84,7 @@ public class SessionHeartBeatChecker extends DefaultRunnable {
                 } catch (InterruptedException ignored) {
                 }
             }
+
         }
 
         return get;
@@ -152,17 +164,19 @@ public class SessionHeartBeatChecker extends DefaultRunnable {
                     id = entry.getKey();
                     session = entry.getValue();
                     try {
-                        session.sendKeepAliveMsg();
+                        if (session.isConnected()) {
+                            session.sendKeepAliveMsg();
+                        } else {
+                            fireSessionDisconnection(id);
+                        }
 
-                        logger.debug("[HEART-BEAT] id={}, session={}", id, session);
+                        logger.trace("[HEART-BEAT] id={}, connected={}, remote={}", id, session.isConnected(), Arrays.toString(session.getPortForwardingR()));
                     } catch (Exception e) {
-                        sessions.remove(id);
+                        fireSessionDisconnection(id);
 
                         logger.warn("[INTERUPPTED] id={}, session={}", id, session);
                     }
                 }
-
-                ThreadUtils.sleep(Math.max(30, (long) (Math.random() * 60000.0)));
             }
         }
     }

@@ -187,8 +187,15 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
                 return new Result<String>(String.join("/", String.valueOf(remotePort), SessionUtils.GET_SESSION_KEY.apply(session)), true).setMessage(message);
             }
         } catch (JSchException e) {
-            String errorMsg = String.format("SSH 연결 시도 중 에러가 발생하였습니다. session: %s, userinfo: %s, 원인: %s", session, userInfo, e.getMessage());
-            logger.warn(errorMsg, e);
+            // com.jcraft.jsch.JSchException: SSH_MSG_DISCONNECT: 2 Too many authentication failures
+
+            String exMsg = e.getMessage();
+            String errorMsg = String.format("SSH 연결 시도 중 에러가 발생하였습니다. session: %s, userinfo: %s, 원인: %s", session, userInfo, exMsg);
+            if (exMsg.contains("Too many authentication failures")) {
+            } else {
+                logger.warn(errorMsg, e);
+            }
+
             return new Result<String>().setMessage(errorMsg);
         }
     }

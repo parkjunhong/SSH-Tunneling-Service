@@ -74,7 +74,6 @@ help(){
 	echo
 	help-list
 	echo
-	echo " -c: Context Path of RESTful API. Default: sshtrm. (SSH Tunneling Request & Manage)"
 	echo " -v: verbose"
 }
 
@@ -97,17 +96,11 @@ __verbose__=0
 __svr_port__=22
 __args__["svr-port"]=1
 # Default context path
-__context__="${server.servlet.contextpath}"
+__api_context__="${server.servlet.contextpath}"
+__api_svr_port__="${server.port}"
 while [ ! -z "$1" ];
 do
 	case "$1" in
-		-c)
-			shift
-			if [ ! -z "$1" ];
-			then
-				__context__="$1"
-			fi
-			;;
 		-h)
 			help
 			exit 0
@@ -238,7 +231,7 @@ fi
 # %s: Header
 # %s: Request Body
 # %s: API
-CURL_CMD="curl -X %s %s %s http://127.0.0.1:18080/${__context__}/connections%s"
+CURL_CMD="curl -X %s %s %s http://127.0.0.1:${__api_svr_port__}/${__api_context__}/connections%s"
 DATA_JSON=" \
 -d '{ \
 	\"tunneling\": { \

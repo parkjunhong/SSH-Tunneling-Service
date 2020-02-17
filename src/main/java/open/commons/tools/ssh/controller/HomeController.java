@@ -158,7 +158,6 @@ public class HomeController extends AbstractComponent {
             , @PathVariable("service-port") @NotNull @Min(1) @Max(65535) int servicePort //
             , @RequestBody @Valid @NotNull ConnectionDTO connection //
     ) {
-        logger.debug("connection: {}", connection);
 
         Object resEntity = null;
         Result<String> resultSvc = sshSvc.connect(connection.getTunneling(), serviceHost, servicePort, connection.getExecution());
