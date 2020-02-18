@@ -132,24 +132,8 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
     }
 
     /**
-     * <br>
-     * 
-     * <pre>
-     * [개정이력]
-     *      날짜    	| 작성자	|	내용
-     * ------------------------------------------
-     * 2020. 2. 13.		박준홍			최초 작성
-     * </pre>
-     *
-     * @param tunneling
-     * @param execution
-     * @return
-     *
-     * @since 2020. 2. 13.
-     * @author Park_Jun_Hong_(fafanmama_at_naver_com)
-     *
      * @see open.commons.tools.ssh.service.ISshTunnelingService#connect(open.commons.tools.ssh.controller.dto.TunnelingInfo,
-     *      String, int, open.commons.tools.ssh.controller.dto.ExecutionInfo)
+     *      java.lang.String, int, open.commons.tools.ssh.controller.dto.ExecutionInfo)
      */
     @Override
     public Result<String> connect(TunnelingInfo tunneling, String serviceHost, int servicePort, ExecutionInfo execution) {
