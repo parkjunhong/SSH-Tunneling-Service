@@ -74,9 +74,25 @@ import com.jcraft.jsch.UserInfo;
 public class SshTunnelingService extends AbstractComponent implements ISshTunnelingService, InitializingBean, DisposableBean {
     public static final String BEAN_QUALIFIER = "open.commons.tools.ssh.service.impl.SshTunnelingService";
 
+    /**
+     * <ul>
+     * <li>key: {@link Session} ID.<br>
+     * <li>value: a {@link Session}.
+     * </ul>
+     * 
+     * @see SessionUtils#GET_SESSION_KEY
+     */
     private static final ConcurrentSkipListMap<String, Session> sessions = new ConcurrentSkipListMap<>();
     private static final Mutex mutexSessions = new Mutex("mutex of 'sessions'");
-    private static final ConcurrentSkipListMap<String, Set<Integer>> remotePortForwardings = new ConcurrentSkipListMap<>();
+    /**
+     * <ul>
+     * <li>key: {@link Session} ID.<br>
+     * <li>value: remote ports bound by a {@link Session}.
+     * </ul>
+     * 
+     * @see SessionUtils#GET_SESSION_KEY
+     */
+    private static final ConcurrentSkipListMap<String, Set<Integer>> sessionBoundRemotePorts = new ConcurrentSkipListMap<>();
 
     private final Closeables closeables = Closeables.list();
     private SessionHeartBeatChecker hbChecker;
@@ -126,7 +142,7 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
         this.hbChecker.registerDisconnectionHandle(sessionId -> {
             synchronized (mutexSessions) {
                 sessions.remove(sessionId);
-                remotePortForwardings.remove(sessionId);
+                sessionBoundRemotePorts.remove(sessionId);
             }
         });
     }
@@ -167,6 +183,7 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
                 // #1. Sessiong 생성
                 session = getSession(username, sshServerHost, sshServerPort);
 
+                // #1-1. 신규일 경우 연결생성
                 if (!session.isConnected()) {
                     userInfo = new SshUserInfo(userPwd, "Are you sure you want to continue connecting", logger);
                     session.setUserInfo(userInfo);
@@ -183,8 +200,7 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
                 }
 
                 // #2. Remote Port Forwarding 추가
-                String message = createRemotePortForwarding(session, remotePort, serviceHost, servicePort);
-                return new Result<String>(String.join("/", String.valueOf(remotePort), SessionUtils.GET_SESSION_KEY.apply(session)), true).setMessage(message);
+                return createRemotePortForwarding(session, remotePort, serviceHost, servicePort);
             }
         } catch (JSchException e) {
             // com.jcraft.jsch.JSchException: SSH_MSG_DISCONNECT: 2 Too many authentication failures
@@ -225,9 +241,11 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
      * @version _._._
      * @author Park_Jun_Hong_(fafanmama_at_naver_com)
      */
-    private String createRemotePortForwarding(Session session, int remotePort, String host, int port) throws JSchException {
+    private Result<String> createRemotePortForwarding(Session session, int remotePort, String host, int port) throws JSchException {
 
         synchronized (mutexSessions) {
+            boolean result = false;
+            String message = null;
             // 기존 Remote Port Forwarding 목록 조회. 이미 포함되어 있다면 신규 생성하지 않음.
             // ${remote-port}:${service-host}:${service-port}
             String[] rpfs = session.getPortForwardingR();
@@ -236,38 +254,49 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
 
                 logger.debug("{} already exists.", rpfKey);
 
-                return "Already exists";
+                result = true;
+                message = "Already exists";
             } else {
-                // ssh -R ${remote-port}:${service-host}:${service-port} ${username}@${ssh-server-host} -p
-                // ${ssh-server-port}
+                // SSH Server에서 요청한 포트를 다른 서비스에 할당했는지 확인.
+                Set<Integer> sbrps = sessionBoundRemotePorts.getOrDefault(SessionUtils.GET_SESSION_KEY.apply(session), new HashSet<>());
+                if (sbrps.contains(remotePort)) {
+                    result = false;
+                    message = "Already bound to other service.";
+                } else {
+                    // ssh -R ${remote-port}:${service-host}:${service-port} ${username}@${ssh-server-host} -p
+                    // ${ssh-server-port}
 
-                // Remote Port Forwarding 추가
-                try {
-                    session.setPortForwardingR(remotePort, host, port);
+                    // Remote Port Forwarding 추가
+                    try {
+                        session.setPortForwardingR(remotePort, host, port);
 
-                    this.hbChecker.register(session);
+                        this.hbChecker.register(session);
 
-                } catch (JSchException e) {
-                    logger.warn("Remote Port Forwarding 정보를 생성하는 도중 에러가 발생하였습니다. 원인: {}", e.getMessage());
+                    } catch (JSchException e) {
+                        logger.warn("Remote Port Forwarding 정보를 생성하는 도중 에러가 발생하였습니다. 원인: {}", e.getMessage());
 
-                    Set<Integer> rPorts = remotePortForwardings.get(SessionUtils.GET_SESSION_KEY.apply(session));
-                    if (rPorts == null || rPorts.size() < 1) {
-                        disconnectSession(session);
+                        Set<Integer> rPorts = sessionBoundRemotePorts.get(SessionUtils.GET_SESSION_KEY.apply(session));
+                        if (rPorts == null || rPorts.size() < 1) {
+                            disconnectSession(session);
+                        }
+
+                        throw e;
                     }
 
-                    throw e;
-                }
+                    String sessionId = SessionUtils.GET_SESSION_KEY.apply(session);
+                    Set<Integer> rPorts = sessionBoundRemotePorts.get(sessionId);
+                    if (rPorts == null) {
+                        rPorts = new HashSet<>();
+                        sessionBoundRemotePorts.put(sessionId, rPorts);
+                    }
+                    rPorts.add(remotePort);
 
-                String sessionId = SessionUtils.GET_SESSION_KEY.apply(session);
-                Set<Integer> rPorts = remotePortForwardings.get(sessionId);
-                if (rPorts == null) {
-                    rPorts = new HashSet<>();
-                    remotePortForwardings.put(sessionId, rPorts);
+                    result = true;
+                    message = "Created";
                 }
-                rPorts.add(remotePort);
-
-                return "Created";
             }
+
+            return new Result<String>(String.join("/", String.valueOf(remotePort), SessionUtils.GET_SESSION_KEY.apply(session)), result).setMessage(message);
         }
     }
 
@@ -298,7 +327,7 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
         logger.info("Disconnected a port({}) in session({}).", remotePort, session);
 
         String sessionId = SessionUtils.GET_SESSION_KEY.apply(session);
-        Set<Integer> rPorts = remotePortForwardings.get(sessionId);
+        Set<Integer> rPorts = sessionBoundRemotePorts.get(sessionId);
 
         logger.info("Removed a port({}) in ({}).", remotePort, StringUtils.concatenate(", ", rPorts));
 
@@ -357,8 +386,8 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
         synchronized (mutexSessions) {
             try {
                 // sessionId에 Remote Port Forwaring이 등록되어 있는지 확인.
-                if (remotePortForwardings.containsKey(sessionId)) {
-                    Set<Integer> rPorts = remotePortForwardings.get(sessionId);
+                if (sessionBoundRemotePorts.containsKey(sessionId)) {
+                    Set<Integer> rPorts = sessionBoundRemotePorts.get(sessionId);
                     if (rPorts == null) {
                         throw new RemotePortNotFoundException("There is no remote ports of session. session-id: %s", sessionId);
                     } else if (rPorts.contains(remotePort)) {
@@ -374,6 +403,7 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
 
                     // "rport:host:hostport"
                     String[] rPortFwd = session.getPortForwardingR();
+                    // 기존 Session 에 Remote Port가 존재하지 않는 경우 해당 Session 삭제.
                     if (rPortFwd == null || rPortFwd.length < 1) {
                         disconnectSession(session);
                         throw new RemotePortNotFoundException("There is no remote ports of session. session-id: %s", sessionId);
@@ -401,7 +431,7 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
 
             String sessionId = SessionUtils.GET_SESSION_KEY.apply(session);
             sessions.remove(sessionId);
-            remotePortForwardings.remove(sessionId);
+            sessionBoundRemotePorts.remove(sessionId);
 
             this.hbChecker.unregister(sessionId);
         }
@@ -504,12 +534,28 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
         }
     }
 
+    /**
+     * 기존 Session 에 관리되지 못한 Remote Port가 존재하지 않는 경우 관리목록에 추가.<br>
+     * 
+     * <pre>
+     * [개정이력]
+     *      날짜    	| 작성자	|	내용
+     * ------------------------------------------
+     * 2020. 2. 18.		박준홍			최초 작성
+     * </pre>
+     *
+     * @param session
+     * @throws JSchException
+     *
+     * @since 2020. 2. 18.
+     * @version _._._
+     * @author Park_Jun_Hong_(fafanmama_at_naver_com)
+     */
     private void rebuildRemotePortForwarding(Session session) throws JSchException {
-        // 기존 Session 에 Remote Port가 존재하지 않는 경우 해당 Session 삭제
         Set<Integer> rPorts = new HashSet<>();
         for (String rPort : session.getPortForwardingR()) {
             rPorts.add(Integer.parseInt(rPort.split(":")[0]));
         }
-        remotePortForwardings.put(SessionUtils.GET_SESSION_KEY.apply(session), rPorts);
+        sessionBoundRemotePorts.put(SessionUtils.GET_SESSION_KEY.apply(session), rPorts);
     }
 }

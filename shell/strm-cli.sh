@@ -162,19 +162,6 @@ do
 			__username__=${server[0]}
 			__svr_host__=${server[1]}
 
-			while [ 1 ];
-			do
-				read -s -p " > ${__username__}@${__svr_host__}'s password: " __userpwd__
-
-				if [ -z $"{__userpwd__}" ];
-				then
-						echo
-						echo " > Please, enter a password !!!"
-				else
-						break
-				fi
-			done
-
 			__args__["server"]=1
 			;;
 		-t)
@@ -244,6 +231,19 @@ DATA_JSON=" \
 }'"
 # @param $1 {string} arguments name
 connect(){
+	while [ 1 ];
+	do
+		read -s -p " > ${__username__}@${__svr_host__}'s password: " __userpwd__
+	if [ -z $"{__userpwd__}" ];
+		then
+			echo
+			echo " > Please, enter a password !!!"
+		else
+			break
+		fi
+	done
+	echo
+
 	local header="-H 'Content-Type: application/json;charset=UTF-8' -H 'Accept: text/plain'"
 	local data=$(printf "${DATA_JSON}" "${__username__}" "${__userpwd__}" "${__svr_host__}" "${__svr_port__}" "${__rport__}" )
 	
