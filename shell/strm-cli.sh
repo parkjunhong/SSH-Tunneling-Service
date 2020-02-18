@@ -74,7 +74,6 @@ help(){
 	echo
 	help-list
 	echo
-	echo " -c: Context Path of RESTful API. Default: sshtrm. (SSH Tunneling Request & Manage)"
 	echo " -v: verbose"
 }
 
@@ -97,17 +96,11 @@ __verbose__=0
 __svr_port__=22
 __args__["svr-port"]=1
 # Default context path
-__context__="${server.servlet.contextpath}"
+__api_context__="${server.servlet.contextpath}"
+__api_svr_port__="${server.port}"
 while [ ! -z "$1" ];
 do
 	case "$1" in
-		-c)
-			shift
-			if [ ! -z "$1" ];
-			then
-				__context__="$1"
-			fi
-			;;
 		-h)
 			help
 			exit 0
@@ -169,19 +162,6 @@ do
 			__username__=${server[0]}
 			__svr_host__=${server[1]}
 
-			while [ 1 ];
-			do
-				read -s -p " > ${__username__}@${__svr_host__}'s password: " __userpwd__
-
-				if [ -z $"{__userpwd__}" ];
-				then
-						echo
-						echo " > Please, enter a password !!!"
-				else
-						break
-				fi
-			done
-
 			__args__["server"]=1
 			;;
 		-t)
@@ -238,7 +218,7 @@ fi
 # %s: Header
 # %s: Request Body
 # %s: API
-CURL_CMD="curl -X %s %s %s http://127.0.0.1:18080/${__context__}/connections%s"
+CURL_CMD="curl -X %s %s %s http://127.0.0.1:${__api_svr_port__}/${__api_context__}/connections%s"
 DATA_JSON=" \
 -d '{ \
 	\"tunneling\": { \
@@ -251,6 +231,19 @@ DATA_JSON=" \
 }'"
 # @param $1 {string} arguments name
 connect(){
+	while [ 1 ];
+	do
+		read -s -p " > ${__username__}@${__svr_host__}'s password: " __userpwd__
+	if [ -z $"{__userpwd__}" ];
+		then
+			echo
+			echo " > Please, enter a password !!!"
+		else
+			break
+		fi
+	done
+	echo
+
 	local header="-H 'Content-Type: application/json;charset=UTF-8' -H 'Accept: text/plain'"
 	local data=$(printf "${DATA_JSON}" "${__username__}" "${__userpwd__}" "${__svr_host__}" "${__svr_port__}" "${__rport__}" )
 	

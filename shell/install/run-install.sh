@@ -425,12 +425,28 @@ do
 			case "$res_dir" in
 				config)
 					# 로그파일 설정적용
-					logfilename=$(read_prop "$CONFIG_FILE" "log.configuration.filename")
-					logproperties=$(read_prop "$CONFIG_FILE" "log.configuration.properties")
-					if [ ! -z "$logfilename" ] && [ ! -z "$logproperties" ];
-					then
-						update_file "$CUR_DIR/../$res_dir/$logfilename" "$logproperties"
-					fi
+					#logfilename=$(read_prop "$CONFIG_FILE" "log.configuration.filename")
+					#logproperties=$(read_prop "$CONFIG_FILE" "log.configuration.properties")
+					#if [ ! -z "$logfilename" ] && [ ! -z "$logproperties" ];
+					#then
+					#	update_file "$CUR_DIR/../$res_dir/$logfilename" "$logproperties"
+					#fi
+					
+					echo " > HIT < .. config... config... config... config... config... "
+					
+					configfilenames=($(read_prop "$CONFIG_FILE" "config.configuration.filenames"))
+					configproperties=$(read_prop "$CONFIG_FILE" "config.configuration.properties")
+					
+					echo " > HIT < ... configfilenames: ${configfilenames[@]}"
+					echo " > HIT < ... configproperties: ${configproperties[@]}" 
+					
+					for configfilename in ${configfilenames[@]}
+					do
+						if [ ! -z "${configfilename}" ] && [ ! -z "${configproperties}" ];
+						then
+							update_file "$CUR_DIR/../$res_dir/$configfilename" "$configproperties"
+						fi
+					done
 					;;
 				crontab)
 					# crontab 설정 적용
@@ -499,7 +515,11 @@ copy_files(){
 			if [ -f "$SOURCE/$file" ]; then
 				case ${file} in
 					"strm-cli.sh")
-						
+						local cronproperties=$(read_prop "$CONFIG_FILE" "strm-cli.configuration.properties")
+						if [ ! -z "$cronproperties" ];
+						then
+							update_file "$SOURCE/$file" "$cronproperties"
+						fi
 						;;
 				esac
 			

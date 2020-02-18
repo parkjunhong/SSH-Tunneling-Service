@@ -3,7 +3,7 @@
   
 server:
   address: 0.0.0.0
-  port: 18080
+  port: ${server.port}
   servlet:
     context-path: /${server.servlet.contextpath} # SSH Tunneling Request & Manage
   
