@@ -45,14 +45,14 @@ Configuration:
       
     Logger:
       - name: open.commons.tools.ssh
-        level: TRACE
+        level: INFO
         includeLocation: true
         additivity: false
         AppenderRef:
           - ref: ConsoleByPattern
           - ref: RollingFileByPattern
       - name: open.commons
-        level: TRACE
+        level: INFO
         includeLocation: true
         additivity: false
         AppenderRef:

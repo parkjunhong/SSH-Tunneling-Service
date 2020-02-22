@@ -514,8 +514,8 @@ copy_files(){
 		{
 			if [ -f "$SOURCE/$file" ]; then
 				case ${file} in
-					"strm-cli.sh")
-						local cronproperties=$(read_prop "$CONFIG_FILE" "strm-cli.configuration.properties")
+					"ssh-cmd.sh")
+						local cronproperties=$(read_prop "$CONFIG_FILE" "ssh-cmd.configuration.properties")
 						if [ ! -z "$cronproperties" ];
 						then
 							update_file "$SOURCE/$file" "$cronproperties"
