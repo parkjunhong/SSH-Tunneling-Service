@@ -111,8 +111,10 @@ load_os_info(){
 	then
 		echo
 		echo " ---> read $releasefile"
-		OS_NAME=$(cat /etc/os-release | grep -i "^id=" | sed -e "s/\"//g" | sed -e "s/id=//gi" | tr [:upper:] [:lower:])
-		OS_VERSION=$(cat /etc/os-release | grep -i "^VERSION_id=" | sed -e "s/\"//g" | sed -e "s/version_id=//gi" | tr -dc '0-9.' | cut -d \. -f1)			
+		#OS_NAME=$(cat /etc/os-release | grep -i "^id=" | sed -e "s/\"//g" | sed -e "s/id=//gi" | tr [:upper:] [:lower:])
+		#OS_VERSION=$(cat /etc/os-release | grep -i "^VERSION_id=" | sed -e "s/\"//g" | sed -e "s/version_id=//gi" | tr -dc '0-9.' | cut -d \. -f1)
+		OS_NAME=$(grep -v "#" /etc/os-release | grep -i "^id=" | sed -e "s/\"//g" | sed -e "s/id=//gi" | tr [:upper:] [:lower:])
+		OS_VERSION=$(grep -v "#"  /etc/os-release | grep -i "^VERSION_id=" | sed -e "s/\"//g" | sed -e "s/version_id=//gi" | tr -dc '0-9.' | cut -d \. -f1)
 	else
 		# CentOS 6
 		local releasefile="/etc/centos-release" 
@@ -120,8 +122,10 @@ load_os_info(){
 		then
 			echo
 			echo " ---> read $releasefile"
-			OS_NAME=$(cat /etc/centos-release | awk {'print $1'} | tr [:upper:] [:lower:])
-			OS_VERSION=$(cat /etc/centos-release | tr -dc '0-9.'|cut -d \. -f1)
+			#OS_NAME=$(cat /etc/centos-release | awk {'print $1'} | tr [:upper:] [:lower:])
+			#OS_VERSION=$(cat /etc/centos-release | tr -dc '0-9.'|cut -d \. -f1)
+			OS_NAME=$(grep -v "#" /etc/centos-release | awk {'print $1'} | tr [:upper:] [:lower:])
+			OS_VERSION=$(grep -v "#" /etc/centos-release | tr -dc '0-9.'|cut -d \. -f1)
 		else
 			support_msg
 			echo
@@ -139,10 +143,12 @@ check_centos(){
 	echo
 	echo "-------- ${FUNCNAME[0]} --------"
 	
-	local OSN=$(cat /etc/centos-release | awk {'print $1'} | tr [:upper:] [:lower:])
+	#local OSN=$(cat /etc/centos-release | awk {'print $1'} | tr [:upper:] [:lower:])
+	local OSN=$(grep -v "#" /etc/centos-release | awk {'print $1'} | tr [:upper:] [:lower:])
 	validate $OS_NAME $OSN
 	
-	local OSV=$(cat /etc/centos-release | tr -dc '0-9.'|cut -d \. -f1)
+	#local OSV=$(cat /etc/centos-release | tr -dc '0-9.'|cut -d \. -f1)
+	local OSV=$(grep -v "#" /etc/centos-release | tr -dc '0-9.'|cut -d \. -f1)
 	validate $OS_VERSION $OSV
 }
 
@@ -150,10 +156,12 @@ check_ubuntu(){
 	echo
 	echo "-------- ${FUNCNAME[0]} --------"
 		
-	local OSN=$(cat /etc/os-release | grep -i "^NAME=" | sed -e "s/\"//g" | sed -e "s/name=//gi" | tr [:upper:] [:lower:])
+	#local OSN=$(cat /etc/os-release | grep -i "^NAME=" | sed -e "s/\"//g" | sed -e "s/name=//gi" | tr [:upper:] [:lower:])
+	local OSN=$(grep -v "#" /etc/os-release | grep -i "^NAME=" | sed -e "s/\"//g" | sed -e "s/name=//gi" | tr [:upper:] [:lower:])
 	validate $OS_NAME $OSN
 		
-	local OSV=$(cat /etc/os-release | grep -i "^VERSION=" | sed -e "s/\"//g" | sed -e "s/version=//gi" | tr -dc '0-9.' | cut -d \. -f1)
+	#local OSV=$(cat /etc/os-release | grep -i "^VERSION=" | sed -e "s/\"//g" | sed -e "s/version=//gi" | tr -dc '0-9.' | cut -d \. -f1)
+	local OSV=$(grep -v "#" /etc/os-release | grep -i "^VERSION=" | sed -e "s/\"//g" | sed -e "s/version=//gi" | tr -dc '0-9.' | cut -d \. -f1)
 	validate $OS_VERSION $OSV	
 }
 
