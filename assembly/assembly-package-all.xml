@@ -52,7 +52,7 @@
 		<!-- +++++++++++++++++++++++++++++++ -->
 		<!-- begin: COPY INSTALL SHELL FILES -->
 		<fileSet>
-			<directory>${project.basedir}/shell/install/</directory>
+			<directory>${project.basedir}/workdir/install/</directory>
 			<outputDirectory>/install</outputDirectory>
 			<includes>
 				<include>**</include>
@@ -62,7 +62,7 @@
 			</excludes>
 		</fileSet>
 		<fileSet>
-			<directory>${project.basedir}/shell/install/</directory>
+			<directory>${project.basedir}/workdir/install/</directory>
 			<outputDirectory>/install</outputDirectory>
 			<includes>
 				<include>**/*.sh</include>
