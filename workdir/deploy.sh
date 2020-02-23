@@ -513,8 +513,8 @@ handle_by_systemctl(){
 			local svc_dir=$4
 						
 			echo
-			sudo cp -uf ${svc_file} "${svc_dir}/${svc_name}"
-			echo "[SUCCESS] sudo cp -uf ${svc_file} ${svc_dir}/${svc_name}"
+			sudo cp -f ${svc_file} "${svc_dir}/${svc_name}"
+			echo "[SUCCESS] sudo cp -f ${svc_file} ${svc_dir}/${svc_name}"
 			;;
 		create)
 			local svc_name=$2".service"
@@ -608,8 +608,8 @@ handle_by_service(){
 			local svc_dir=$4
 			
 			echo
-			sudo cp -uf ${svc_flie} "${svc_dir}/${svc_name}"
-			echo "sudo cp -uf ${svc_file} ${svc_dir}/${svc_name}"
+			sudo cp -f ${svc_file} "${svc_dir}/${svc_name}"
+			echo "sudo cp -f ${svc_file} ${svc_dir}/${svc_name}"
 			echo
 			sudo chmod +x "${svc_dir}/${svc_name}"
 			echo "sudo chmod +x ${svc_dir}/${svc_name}"		
