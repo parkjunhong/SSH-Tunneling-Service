@@ -43,11 +43,6 @@ done
 
 INSALL_DIR="${install.dir}"
 cd ${INSALL_DIR}
-# Build 프로파일 읽기
-if [ -f "${INSALL_DIR}/.profile" ];
-then
-	PROFILE=$(cat ./.profile)
-fi
 
 ## Java 확인
 JAVA_PATH=$(command -v java)
@@ -64,7 +59,6 @@ EXEC_FILE="${execution.filename}"
 
 echo
 echo "=============================================================================================="
-echo "PROFILE      : ${PROFILE}"
 echo "APP_NAME     : ${APP_NAME}"
 echo "DIRECTORY    : ${INSALL_DIR}"
 echo "EXEC_FILE    : ${EXEC_FILE}"
