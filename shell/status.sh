@@ -36,13 +36,6 @@ done
 
 # ###########################################################################
 
-INSALL_DIR="${install.dir}"
-# Build 프로파일 읽기
-if [ -f "${INSALL_DIR}/.profile" ];
-then
-	PROFILE=$(cat ./.profile)
-fi
-
 SERVICE_NAME="${service.name}"
 APP_NAME="${application.name}"
 PS_NAME="["${APP_NAME:0:1}"]"${APP_NAME:1}

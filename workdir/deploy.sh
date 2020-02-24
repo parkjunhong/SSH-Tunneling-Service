@@ -513,8 +513,8 @@ handle_by_systemctl(){
 			local svc_dir=$4
 						
 			echo
-			sudo cp -uf ${svc_file} ${svc_dir}/${svc_name}
-			echo "[SUCCESS] sudo cp -uf ${svc_file} ${svc_dir}/${svc_name}"
+			sudo cp -f ${svc_file} "${svc_dir}/${svc_name}"
+			echo "[SUCCESS] sudo cp -f ${svc_file} ${svc_dir}/${svc_name}"
 			;;
 		create)
 			local svc_name=$2".service"
@@ -558,8 +558,8 @@ handle_by_systemctl(){
 				sudo systemctl disable ${svc_name}
 				echo "[SUCCESS] sudo systemctl disable ${svc_name}"
 				echo
-				sudo rm -rf  ${svc_dir}/${svc_name}	
-				echo "[SUCCESS] sudo rm -rf  ${svc_dir}/${svc_name}"
+				sudo rm -f  "${svc_dir}/${svc_name}"	
+				echo "[SUCCESS] sudo rm -f  ${svc_dir}/${svc_name}"
 			fi		
 			;;
 		start)
@@ -608,10 +608,10 @@ handle_by_service(){
 			local svc_dir=$4
 			
 			echo
-			sudo cp -uf ${svc_flie} ${svc_dir}/${svc_name}
-			echo "sudo cp -uf ${svc_file} ${svc_dir}/${svc_name}"
+			sudo cp -f ${svc_file} "${svc_dir}/${svc_name}"
+			echo "sudo cp -f ${svc_file} ${svc_dir}/${svc_name}"
 			echo
-			sudo chmod +x ${svc_dir}/${svc_name}
+			sudo chmod +x "${svc_dir}/${svc_name}"
 			echo "sudo chmod +x ${svc_dir}/${svc_name}"		
 			;;
 		create)
@@ -631,7 +631,7 @@ handle_by_service(){
 					then
 						local property="${svc_dir}/${svc_name}"			
 					else
-						local property=$(read_prop "${CONFIG}" "${prop_ref}")
+						local property=$(read_prop "${CONFIG_FILE}" "${prop_ref}")
 					fi
 					
 					printf "	%-30s = %s\n" "${prop_ref}" "${property}"
@@ -658,8 +658,8 @@ handle_by_service(){
 				sudo chkconfig --del ${svc_name}
 				echo "sudo chkconfig --del ${svc_name}"
 				echo
-				sudo rm -rf  ${svc_dir}/${svc_name}	
-				echo "sudo rm -rf  ${svc_dir}/${svc_name}"
+				sudo rm -f  "${svc_dir}/${svc_name}"
+				echo "sudo rm -f  ${svc_dir}/${svc_name}"
 			fi			
 			;;
 		start)
