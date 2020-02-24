@@ -86,11 +86,11 @@ then
 fi
 
 # begin: 커스터마이징 !!!
-# 
 # end: 커스터마이징 !!!
 
 # 프로그램 설정정보
 EXEC_CMD=${EXEC_CMD}" -jar -Dname=${APP_NAME} ${JAVA_OPTS} ${EXEC_FILE} > /dev/null 2>&1 &"
+
 
 {
 	eval ${EXEC_CMD}

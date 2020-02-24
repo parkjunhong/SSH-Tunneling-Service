@@ -32,7 +32,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -65,27 +64,6 @@ public class ApplicationMain {
 
         SpringApplication app = new SpringApplication(ApplicationMain.class);
         app.addListeners(new SpringApplicationListener() {
-            /**
-             * <br>
-             * 
-             * <pre>
-             * [개정이력]
-             *      날짜    	| 작성자	|	내용
-             * ------------------------------------------
-             * 2020. 2. 13.		박준홍			최초 작성
-             * </pre>
-             *
-             * @param event
-             *
-             * @since 2020. 2. 13.
-             * @author Park_Jun_Hong_(fafanmama_at_naver_com)
-             *
-             * @see open.commons.spring.web.listener.SpringApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
-             */
-            @Override
-            public void onApplicationEvent(ApplicationEvent event) {
-                super.onApplicationEvent(event);
-            }
         });
         app.run(args);
     }
