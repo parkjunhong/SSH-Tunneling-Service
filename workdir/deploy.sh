@@ -438,29 +438,35 @@ contains() {
 }
 
 ## 소스 디렉토리 안의 파일을 대상 디렉토리로 복사
-# @param $1 {string} from directory.
-# @param $2 {string} to directory.
-# @param $3 {string} 변경할 파일 목록 
+# @param $1 {string} from directory. (fullpath)
+# @param $2 {string} to directory. (fullpath)
+# @param $3 {string} 복사대상 식별정보 
 copy_files(){
 	local source=$1
 	local target=$2
-	local configfilenames=$3
+	local filecontainer=$3
 	local files=$(ls -ap ${source} | grep -v /)
-
-	## contains 함수에서 사용하기 위해서 global 변수로 설정
-	filesconfig=($(read_prop "${CONFIG_FILE}" "${configfilenames}"))
+	
+	## 'contains' 함수에서 사용하기 위해서 global 변수로 설정
+	filesconfig=($(read_prop "${CONFIG_FILE}" "${filecontainer}.configuration.filename"))
 	for file in ${files};
 	do
 	{
+		local filesconfigprops=""
 		if [ -f "${source}/${file}" ];
 		then
-			if [ $(contains "filesconfig" ${file}) -eq 1 ];
+			# 디렉토리에 포함된 모든 
+			if [ "${filesconfig}" == "\*" ];
 			then
-				local filesconfigprops=$(read_prop "${CONFIG_FILE}" "${file}.configuration.properties")
-				if [ ! -z "$filesconfigprops" ];
-				then
-					update_file "${source}/${file}" "$filesconfigprops"
-				fi
+				filesconfigprops=$(read_prop "${CONFIG_FILE}" "${filecontainer}.configuration.properties")
+			elif [ $(contains "filesconfig" ${file}) -eq 1 ];
+			then
+				filesconfigprops=$(read_prop "${CONFIG_FILE}" "${file}.configuration.properties")
+			fi
+			
+			if [ ! -z "$filesconfigprops" ];
+			then
+				update_file "${source}/${file}" "$filesconfigprops"
 			fi
 			
 			
@@ -934,8 +940,7 @@ echo "Initialize a installation directory"
 }
 
 echo 
-echo "### copy resource directories ###" 
-
+echo ">>> ### copy resource directories ###" 
 ##
 ## begin: 디렉토리 복사
 ## 디렉토리를 복사하면서 특정 파일에 대한 별도 처리를 추가할 수 있다. 
@@ -945,7 +950,7 @@ do
 {
 	res_dir="${BUILD_NAME}/${dir_name}"
 	if [  -d "${res_dir}" ]; then
-		copy_files ${res_dir} "${INST_DIR}/${dir_name}" "${dir_name}.configuration.filenames"
+		copy_files ${res_dir} "${INST_DIR}/${dir_name}" "${dir_name}"
 	else
 		echo "[FAIL] ${res_dir} does NOT EXIST !!!"
 	fi
@@ -956,12 +961,14 @@ do
 	exit 2
 }
 done
+echo "<<<"
 ## end: 디렉토리 복사
 
 echo 
-echo "### copy resoureces files ###" 
+echo ">>> ### copy resoureces files ###" 
 ## 모듈 관련 파일 복사 
-copy_files ${BUILD_NAME} ${INST_DIR} "files.configuration.filenames"
+copy_files ${BUILD_NAME} ${INST_DIR} "files"
+echo "<<<"
 
 echo
 echo "###########################################################################################"
