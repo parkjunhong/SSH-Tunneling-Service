@@ -205,7 +205,7 @@ global_rematch() {
 prop(){
 	local property=""
 	# 1. profile 에 기반한 설정부터 조회 
-	if [ ! -z "${PROFILE}" ];
+	if [ ! -z "${1}" ];
 	then
 		local property=$(grep -v -e "^#" ${1} | grep -e "^${2}\.${PROFILE}=" | cut -d"=" -f2-)
 	fi
@@ -1011,7 +1011,7 @@ then
 	sleep 1
 	
 	AUTOSTART=$(read_prop "${CONFIG_FILE}" "service.autostart")
-	if [ "$AUTOSTART" = "Y" ];
+	if [ "${AUTOSTART}" = "Y" ];
 	then
 		# 서비스 시작
 		handle_service ${OS_NAME} ${OS_VERSION} "start" ${SVC_NAME}
@@ -1019,9 +1019,8 @@ then
 		# 서비스 상태 조회
 		#handle_service ${OS_NAME} ${OS_VERSION} "status" ${SVC_NAME}
 		_status_cmd_=$(read_prop "${CONFIG_FILE}" "service.file.exec_status")
-		cd ${INST_DIR}
-		eval ${_staus_cmd_}
-		cd ${CUR_DIR}
+		echo "_status_cmd_=${_status_cmd_}"
+		eval ${_status_cmd_}
 	fi
 fi
 
