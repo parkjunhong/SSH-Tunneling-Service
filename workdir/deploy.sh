@@ -448,7 +448,7 @@ copy_files(){
 	local files=$(ls -ap ${source} | grep -v /)
 	
 	## 'contains' 함수에서 사용하기 위해서 global 변수로 설정
-	filesconfig=($(read_prop "${CONFIG_FILE}" "${filecontainer}.configuration.filename"))
+	filesconfig=($(read_prop "${CONFIG_FILE}" "${filecontainer}.configuration.filenames"))
 	for file in ${files};
 	do
 	{
