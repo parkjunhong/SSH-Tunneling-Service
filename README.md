@@ -6,7 +6,7 @@ Also you are able to do above mentioned by using cli based on BASH script instea
 ### RESTful API
 Writing on [SSH Tunneling API](https://documenter.getpostman.com/view/474408/SzKPWhMh?version=latest).
 
-### CLI ([ssh-tunneling](https://github.com/parkjunhong/SSH-Tunneling-Service/blob/master/shell/strm-cli.sh))
+### CLI ([ssh-cmd.sh](https://github.com/parkjunhong/SSH-Tunneling-Service/blob/master/shell/ssh-cmd.sh))
 
 __connect__   : connect to ssh server for remote port forwarding.
 ```bash
