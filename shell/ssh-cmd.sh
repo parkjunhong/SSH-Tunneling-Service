@@ -15,8 +15,8 @@ help-add-forwarding(){
 	fi
 
 	echo " ADD Tunneling"
-	echo " e.g.) ssh-cmd --add-forwarding=<rport>:<dhost>:<dport>/<username>@<shost>:<sport>"
-	echo "       ssh-cmd --add-forwarding=1234:127.0.0.1:1234/user@192.168.0.2:22"
+	echo " e.g.) ssh-cmd.sh --add-forwarding=<rport>:<dhost>:<dport>/<username>@<shost>:<sport>"
+	echo "       ssh-cmd.sh --add-forwarding=1234:127.0.0.1:1234/user@192.168.0.2:22"
 	echo " [options]"
 	echo " rport: remote port."
 	echo " dhost: destination host."
@@ -33,8 +33,8 @@ help-del-forwarding(){
 	fi
 
 	echo " DELete Tunneling"
-	echo " e.g.) ssh-cmd --del-forwarding=<rport>/<username>@<shost>:<sport>"
-	echo "       ssh-cmd --del-forwarding=1234/user@192.168.0.2:22"
+	echo " e.g.) ssh-cmd.sh --del-forwarding=<rport>/<username>@<shost>:<sport>"
+	echo "       ssh-cmd.sh --del-forwarding=1234/user@192.168.0.2:22"
 	echo " [options]"
 	echo " rport: remote port."
 	echo " user : SSH Server username."
@@ -50,7 +50,7 @@ help-list-all(){
 
 	echo " LIST"
 	echo " provide remote port forwarding information."
-	echo " e.g.) ssh-cmd --list-all"
+	echo " e.g.) ssh-cmd.sh --list-all"
 }
 
 #
@@ -64,7 +64,7 @@ help(){
 	fi
 	
 	echo "Usage:"
-	echo " ssh-cmd <command> <options>"
+	echo " ssh-cmd.sh <command> <options>"
 	echo
 	echo "[Command]"
 	help-add-forwarding
@@ -104,7 +104,7 @@ do
 				_cmd_=$(cut -d'=' -f1 <<< "$1")
 				case ${_cmd_:6} in
 					forwarding)
-						# ssh-cmd --add-forwarding=<rport>:<dhost>:<dport>/<username>@<shost>:<sport>"
+						# ssh-cmd.sh --add-forwarding=<rport>:<dhost>:<dport>/<username>@<shost>:<sport>"
 						IFS=":/@" read -a _add_args_ <<< "$(cut -d'=' -f2 <<< "$1")"
 						if [ ${#_add_args_[@]} -ne 6 ];
 						then
@@ -138,7 +138,7 @@ do
 				_cmd_=$(cut -d'=' -f1 <<< "$1")
 				case ${_cmd_:6} in
 					forwarding)
-						# ssh-cmd --del-forwarding=<rport>/<username>@<shost>:<sport>"
+						# ssh-cmd.sh --del-forwarding=<rport>/<username>@<shost>:<sport>"
 						IFS="/@:" read -a _del_args_ <<< "$(cut -d'=' -f2 <<< "$1")"
 						if [ ${#_del_args_[@]} -ne 4 ];
 						then
