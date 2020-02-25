@@ -6,39 +6,38 @@ Also you are able to do above mentioned by using cli based on BASH script instea
 ### RESTful API
 Writing on [SSH Tunneling API](https://documenter.getpostman.com/view/474408/SzKPWhMh?version=latest).
 
-### CLI ([ssh-tunneling](https://github.com/parkjunhong/SSH-Tunneling-Service/blob/master/shell/strm-cli.sh))
+### CLI ([ssh-cmd.sh](https://github.com/parkjunhong/SSH-Tunneling-Service/blob/master/shell/ssh-cmd.sh))
 
-__connect__   : connect to ssh server for remote port forwarding.
 ```bash
-strm-cli.sh connect -r <rport>:<host>:<port> -s <username>@<svr-host> -p <svr-port> -v
+Usage:
+ ssh-cmd <command> <options>
 
-[options]
--r: Remote Port Forwarding(RPF) Information.
-    + rport : remote port.
-    + host  : RFP destination host.
-    + port  : RFP destination port.
--s: SSH Server Information.
-    + username: SSH Server user name.
-    + svr-host: SSH Server host.
-    + svr-port: SSH Server port.
--p: SSH Server port    
-```
+[Command]
+ ADD Tunneling
+ e.g.) ssh-cmd --add-forwarding=<rport>:<dhost>:<dport>/<username>@<shost>:<sport>
+       ssh-cmd --add-forwarding=1234:127.0.0.1:1234/user@192.168.0.2:22
+ [options]
+ rport: remote port.
+ dhost: destination host.
+ dport: destination port.
+ user : SSH Server username.
+ shost: SSH Server host.
+ sport: SSH Server port.
 
-__disconnect__: cancel a remote port forwarding.
-```bash
-strm-cli.sh disconnect -t <rport>:<username>@<svr-host>:<svr-port>
+ DELete Tunneling
+ e.g.) ssh-cmd --del-forwarding=<rport>/<username>@<shost>:<sport>
+       ssh-cmd --del-forwarding=1234/user@192.168.0.2:22
+ [options]
+ rport: remote port.
+ user : SSH Server username.
+ shost: SSH Server host.
+ sport: SSH Server port.
 
-[options]
--t: Remote Port Forrwarding Unique Information.
-    + rport: remote port
-    + username: account username.
-    + svr-host: SSH Server host.
-    + svr-port: SSH Server port.
-```
+ LIST
+ provide remote port forwarding information.
+ e.g.) ssh-cmd --list-all
 
-__list__      : provide remote port forwarding information.
-```bash
-strm-cli.sh list
+ -v: verbose
 ```
 Edited 2020-02-16, Korea.
 
