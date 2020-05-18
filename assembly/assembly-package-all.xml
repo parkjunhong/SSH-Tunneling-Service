@@ -15,6 +15,11 @@
 			<destName>application.yml</destName>
 		</file>
 		<file>
+			<source>${project.basedir}/config/${build.profile}/auto-connections-${build.profile}.yml</source>
+			<outputDirectory>/config</outputDirectory>
+			<destName>auto-connections.yml</destName>
+		</file>
+		<file>
 			<source>${project.basedir}/config/${build.profile}/log4j2-${build.profile}.yml</source>
 			<outputDirectory>/config</outputDirectory>
 			<destName>log4j2.yml</destName>

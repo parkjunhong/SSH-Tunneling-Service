@@ -26,12 +26,17 @@
 
 package open.commons.tools.ssh.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import open.commons.spring.web.handler.DefaultGlobalInterceptor;
 import open.commons.spring.web.servlet.method.annotation.DefaultGlobalExceptionHandler;
+import open.commons.tools.ssh.controller.dto.AutoConnectionTunnelingInfo;
 
 /**
  * 
@@ -42,11 +47,20 @@ import open.commons.spring.web.servlet.method.annotation.DefaultGlobalExceptionH
 @Configuration
 public class ResourceConfig {
 
+    public static final String BEAN_QUALIFIER_AUTO_CONNECTION_TUNNELINGS = "open.commons.tools.ssh.config.ResourceConfig#AUTO_CONNECTION_TUNNELINGS";
+
     /**
      * 
      * @since 2020. 2. 13.
      */
     public ResourceConfig() {
+    }
+
+    @Bean(BEAN_QUALIFIER_AUTO_CONNECTION_TUNNELINGS)
+    @Primary
+    @ConfigurationProperties("auto-connection-tunneling-info")
+    public List<AutoConnectionTunnelingInfo> getAutoConnectionTunnelingInfo() {
+        return new ArrayList<AutoConnectionTunnelingInfo>();
     }
 
     @Bean

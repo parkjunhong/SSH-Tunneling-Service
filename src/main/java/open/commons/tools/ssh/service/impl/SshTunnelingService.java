@@ -152,7 +152,7 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
      *      java.lang.String, int, open.commons.tools.ssh.controller.dto.ExecutionInfo)
      */
     @Override
-    public Result<String> connect(TunnelingInfo tunneling, String serviceHost, int servicePort, ExecutionInfo execution) {
+    public Result<String> connect(@NotNull TunnelingInfo tunneling, @NotNull String serviceHost, @Min(1) @Max(65535) int servicePort, ExecutionInfo execution) {
 
         String sshServerHost = tunneling.getSshServerHost();
         int sshServerPort = tunneling.getSshServerPort();
@@ -181,6 +181,8 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
 
                         throw e;
                     }
+                }else {
+                    userInfo = session.getUserInfo();
                 }
 
                 // #2. Remote Port Forwarding 추가

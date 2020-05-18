@@ -35,30 +35,29 @@ import org.springframework.validation.annotation.Validated;
 /**
  * SSH Tunneling 연결 요청 정보
  * 
-  * <a href="http://tools.ietf.org/html/rfc7159">APPLICATION_JSON</a> source: <br>
-  * <pre>
-  * 
-  * [CASE - 0]
-  * 
-  * {
-  *   "tunneling": {
-  *     "userId": "user-id",
-  *     "userPwd": "user-passwd",
-  *     "sshServerHost": "192.168.10.1",
-  *     "sshServerPort": 22,
-  *     "tunnelingPort": 8282
-  *   },
-  *   "execution": {
-  *     "type": "now|schedule",
-  *     "begin": 123456789,
-  *     "end": {
-  *       "type": "duration|until",
-  *       "duration": "duration: \\d+[s|m|h|d|y]",
-  *       "until": 123456789
-  *     }
-  *   }
-  * }
-  * </pre>
+ * <a href="http://tools.ietf.org/html/rfc7159">APPLICATION_JSON</a> source: <br>
+ * 
+ * <pre>
+ * [CASE - 0]
+ * {
+ *  "tunneling": {
+ *    "username": "{{username}}",
+ *    "password": "{{password}}",
+ *    "sshServerHost": "{{ssh-server-host}}",
+ *    "sshServerPort": 22,
+ *    "remotePort": 30000
+ *  },
+ *  "execution": {
+ *    "type": "NOW",
+ *    "begin": 123456789,
+ *    "end": {
+ *      "type": "DURATION",
+ *      "duration": "2d",
+ *      "until": 123456789
+ *    }
+ *  }
+ * }
+ * </pre>
  * 
  * @since 2020. 2. 13.
  * @version _._._

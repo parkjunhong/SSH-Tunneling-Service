@@ -70,7 +70,7 @@ public interface ISshTunnelingService {
      * @version _._._
      * @author Park_Jun_Hong_(fafanmama_at_naver_com)
      */
-    public Result<String> connect(TunnelingInfo tunneling, String serviceHost, int servicePort, ExecutionInfo execution);
+    public Result<String> connect(@NotNull TunnelingInfo tunneling, @NotNull String serviceHost, @Min(1) @Max(65535) int servicePort, ExecutionInfo execution);
 
     /**
      * SSH Tunneling 연결을 해제한다. <br>

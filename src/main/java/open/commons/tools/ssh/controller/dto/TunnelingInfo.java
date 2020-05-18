@@ -136,7 +136,7 @@ public class TunnelingInfo {
      *
      * @since 2020. 2. 13.
      */
-    public void setPassword(String userPwd) {
+    public void setPassword(@NotEmpty String userPwd) {
         this.password = userPwd;
     }
 
@@ -146,7 +146,7 @@ public class TunnelingInfo {
      *
      * @since 2020. 2. 13.
      */
-    public void setRemotePort(int tunnelingPort) {
+    public void setRemotePort(@Min(1) @Max(65535) int tunnelingPort) {
         this.remotePort = tunnelingPort;
     }
 
@@ -156,7 +156,7 @@ public class TunnelingInfo {
      *
      * @since 2020. 2. 13.
      */
-    public void setSshServerHost(String sshServerHost) {
+    public void setSshServerHost(@NotEmpty String sshServerHost) {
         this.sshServerHost = sshServerHost;
     }
 
@@ -166,7 +166,7 @@ public class TunnelingInfo {
      *
      * @since 2020. 2. 13.
      */
-    public void setSshServerPort(int sshServerPort) {
+    public void setSshServerPort(@Min(1) @Max(65535) int sshServerPort) {
         this.sshServerPort = sshServerPort;
     }
 
@@ -176,7 +176,7 @@ public class TunnelingInfo {
      *
      * @since 2020. 2. 13.
      */
-    public void setUsername(String userId) {
+    public void setUsername(@NotEmpty String userId) {
         this.username = userId;
     }
 
