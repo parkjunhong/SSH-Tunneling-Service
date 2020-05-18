@@ -39,5 +39,4 @@ open-commons:
         daemon: false # default: false
         threadGroupName: async
         threadNamePrefix: router
-        threadPriority: 5 # MIN: 1, NORMAL: 5, MAX: 10
-
+        threadPriority: 5 # MIN: 1, NORMAL: 5, MAX: 10  
