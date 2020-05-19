@@ -32,7 +32,7 @@ package open.commons.tools.ssh.service;
  * @version _._._
  * @author Park_Jun_Hong_(fafanmama_at_naver_com)
  */
-public class RemotePortForwarding {
+public class RemotePortForwarding implements Comparable<RemotePortForwarding> {
 
     /**
      * SSH Tunneling 포트. <br>
@@ -62,6 +62,39 @@ public class RemotePortForwarding {
         this.remotePort = Integer.parseInt(strs[0]);
         this.serviceHost = strs[1];
         this.servicePort = Integer.parseInt(strs[2]);
+    }
+
+    /**
+     * <br>
+     * 
+     * <pre>
+     * [개정이력]
+     *      날짜    	| 작성자	|	내용
+     * ------------------------------------------
+     * 2020. 5. 19.		박준홍			최초 작성
+     * </pre>
+     *
+     * @param o
+     * @return
+     *
+     * @since 2020. 5. 19.
+     * @author Park_Jun_Hong_(fafanmama_at_naver_com)
+     *
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    @Override
+    public int compareTo(RemotePortForwarding o) {
+        int c = this.remotePort - o.remotePort;
+        if (c != 0) {
+            return c;
+        }
+
+        c = this.serviceHost.compareTo(o.serviceHost);
+        if (c != 0) {
+            return c;
+        }
+
+        return this.servicePort - o.servicePort;
     }
 
     /**

@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -60,7 +61,7 @@ public class SshTunnelingInfo {
     /**
      * Remote Port Forwarding 정보
      */
-    private Set<RemotePortForwarding> remotePortForwardings = new HashSet<>();
+    private Set<RemotePortForwarding> remotePortForwardings = new ConcurrentSkipListSet<>();
 
     /**
      * @param username

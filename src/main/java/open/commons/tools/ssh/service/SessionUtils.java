@@ -51,6 +51,9 @@ public class SessionUtils {
      *            SSH Server port
      */
     public static final TripleFunction<String, String, Integer, String> GENERATE_SESSION_KEY = (u, h, p) -> String.join(":", u, h, String.valueOf(p));
+    /**
+     * @see #GENERATE_SESSION_KEY
+     */
     public static final Function<Session, String> GET_SESSION_KEY = s -> {
         return GENERATE_SESSION_KEY.apply(s.getUserName(), //
                 s.getHost(), //

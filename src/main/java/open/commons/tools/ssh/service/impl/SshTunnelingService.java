@@ -216,9 +216,9 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
      *            연결 객체
      * @param remotePort
      *            SSH Tunelling를 제공해주는 포트
-     * @param host
+     * @param serviceHost
      *            SSH Tunneling 으로 연결되는 Host
-     * @param port
+     * @param servicePort
      *            SSH Tunneling 으로 연결되는 포트
      * @return
      * @throws JSchException
@@ -227,7 +227,7 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
      * @version _._._
      * @author Park_Jun_Hong_(fafanmama_at_naver_com)
      */
-    private Result<String> createRemotePortForwarding(Session session, int remotePort, String host, int port) throws JSchException {
+    private Result<String> createRemotePortForwarding(Session session, int remotePort, String serviceHost, int servicePort) throws JSchException {
 
         synchronized (mutexSessions) {
             boolean result = false;
@@ -235,7 +235,7 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
             // 기존 Remote Port Forwarding 목록 조회. 이미 포함되어 있다면 신규 생성하지 않음.
             // ${remote-port}:${service-host}:${service-port}
             String[] rpfs = session.getPortForwardingR();
-            String rpfKey = SessionUtils.REMOTE_PORT_FORWARDING_KEYGEN.apply(remotePort, host, port);
+            String rpfKey = SessionUtils.REMOTE_PORT_FORWARDING_KEYGEN.apply(remotePort, serviceHost, servicePort);
             if (ArrayUtils.contains(rpfs, rpfKey)) {
 
                 logger.debug("{} already exists.", rpfKey);
@@ -254,7 +254,7 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
 
                     // Remote Port Forwarding 추가
                     try {
-                        session.setPortForwardingR(remotePort, host, port);
+                        session.setPortForwardingR(remotePort, serviceHost, servicePort);
 
                         this.hbChecker.register(session);
 
