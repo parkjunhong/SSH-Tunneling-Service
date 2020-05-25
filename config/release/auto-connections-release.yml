@@ -1,19 +1,20 @@
 # 자동 접속 정보
 auto-connection-tunneling-info:
-  - 
+-
     # 연결한 서비스 IP
     serviceHost: 127.0.0.1
     # 연결할 서비스 포트
-    servicePort: 1234
+    servicePort: 40001
     tunneling:
       # SSH 서버 접속계정 사용자
-      username: username
+      username: "test"
       # SSH 서버 접속계정 비밀번호
-      password: "password"
+      password: "test"
       # SSH 서버 IP
-      sshServerHost: 192.168.0.1
+      sshServerHost: 10.11.1.14
       # SSH 서버 포트
       sshServerPort: 22
       # 서비스 연결 포트
-      remotePort: 300000
+      remotePort: 40001
 
+    

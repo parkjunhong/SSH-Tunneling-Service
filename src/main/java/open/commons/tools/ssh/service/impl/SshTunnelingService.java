@@ -460,7 +460,7 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
 
                 sessions.put(sessionId, session);
 
-                logger.debug("New session is created. id: {}", sessionId);
+                logger.info("New session is created. id: {}", sessionId);
             } else {
                 logger.debug("Already exists. id: {}", sessionId);
             }

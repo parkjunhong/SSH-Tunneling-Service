@@ -48,6 +48,7 @@ import open.commons.tools.ssh.controller.dto.TunnelingInfo;
 import open.commons.tools.ssh.service.ISshTunnelingService;
 import open.commons.tools.ssh.service.impl.SshTunnelingService;
 import open.commons.tools.ssh.utils.Utils;
+import open.commons.utils.ThreadUtils;
 
 /**
  * 
@@ -110,21 +111,28 @@ public class ApplicationMain {
 
                     Result<String> res = null;
                     for (AutoConnectionTunnelingInfo con : conns) {
-                        TunnelingInfo tunl = con.getTunneling();
-                        logger.info(" * * * * * [AUTO CONNECTING] Tunnelings: {}", tunl);
-                        res = svc.connect(con.getTunneling(), con.getServiceHost(), con.getServicePort(), null);
-
-                        if (!res.getResult()) {
-                            // 실패한 경우 1번 더 시도한다.
+                        try {
+                            TunnelingInfo tunl = con.getTunneling();
+                            logger.info(" * * * * * [AUTO CONNECTING] Tunnelings: {}", tunl);
                             res = svc.connect(con.getTunneling(), con.getServiceHost(), con.getServicePort(), null);
-                            if (!res.getResult()) {
-                                continue;
-                            }
-                        }
 
-                        tunl = con.getTunneling();
-                        logger.info(" * * * * * [AUTO CONNECTED] Connections: {}@{}:{} -> {}:{}", tunl.getUsername(), tunl.getSshServerHost(), tunl.getRemotePort(),
-                                con.getServiceHost(), con.getServicePort());
+                            if (!res.getResult()) {
+                                // 실패한 경우 1번 더 시도한다.
+                                res = svc.connect(con.getTunneling(), con.getServiceHost(), con.getServicePort(), null);
+                                if (!res.getResult()) {
+                                    logger.error(" * * * * * [FAILED A.C.] Connections: {}@{}:{} -> {}:{}", tunl.getUsername(), tunl.getSshServerHost(), tunl.getRemotePort(),
+                                            con.getServiceHost(), con.getServicePort());
+                                    continue;
+                                }
+                            }
+
+                            tunl = con.getTunneling();
+                            logger.info(" * * * * * [AUTO CONNECTED] Connections: {}@{}:{} -> {}:{}", tunl.getUsername(), tunl.getSshServerHost(), tunl.getRemotePort(),
+                                    con.getServiceHost(), con.getServicePort());
+                            
+                        }finally {
+                            ThreadUtils.sleep(1000);
+                        }
                     }
                 });
             }
