@@ -36,6 +36,7 @@
 		<open-commons-spring-jdbc.version>0.0.7-SNAPSHOT</open-commons-spring-jdbc.version>
 		
 		<jsh.version>0.1.55</jsh.version>
+		<jsch-ex.version>0.1.55.1</jsch-ex.version>
 		<!-- end - dependencies / !!! 프로젝트에 맞춰 변경할 것 !!! -->
 		
 	</properties>
@@ -170,11 +171,18 @@
 		<!-- ************** -->
 		<!-- begin:  ssh client -->
 		<!-- https://mvnrepository.com/artifact/com.jcraft/jsch -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.jcraft</groupId> -->
+<!-- 			<artifactId>jsch</artifactId> -->
+<!-- 			<version>${jsh.version}</version> -->
+<!-- 		</dependency> -->
+		<!-- bug fixed version -->
 		<dependency>
-			<groupId>com.jcraft</groupId>
-			<artifactId>jsch</artifactId>
-			<version>${jsh.version}</version>
+		  <groupId>open.commons.external</groupId>
+		  <artifactId>com.craft.jsch</artifactId>
+		  <version>${jsch-ex.version}</version>
 		</dependency>
+		
 		<!-- end:  ssh client -->
 		<!-- ************** -->
 	</dependencies>
@@ -390,6 +398,14 @@
 					<docencoding>${encoding}</docencoding>
 					<encoding>${encoding}</encoding>
 				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<!-- end: javadoc -->
 		</plugins>
