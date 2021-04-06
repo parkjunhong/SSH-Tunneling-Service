@@ -15,15 +15,18 @@ help-add-forwarding(){
 	fi
 
 	echo " ADD Tunneling"
-	echo " e.g.) ssh-cmd.sh --add-forwarding=<rport>:<dhost>:<dport>/<username>@<shost>:<sport>"
-	echo "       ssh-cmd.sh --add-forwarding=1234:127.0.0.1:1234/user@192.168.0.2:22"
-	echo " [options]"
+	echo " e.g.) ssh-cmd.sh --add-forwarding=<rport>:<dhost>:<dport>/<username>@<shost>:<sport>  -d"
+	echo "       ssh-cmd.sh --add-forwarding=1234:127.0.0.1:1234/user@192.168.0.2:22 -d test-con"
+	echo " [parameters]"
 	echo " rport: remote port."
 	echo " dhost: destination host."
 	echo " dport: destination port."
 	echo " user : SSH Server username."
 	echo " shost: SSH Server host."
 	echo " sport: SSH Server port."
+	echo
+	echo " [options]"
+	echo " -d : description for the connection"
 }
 
 help-del-forwarding(){
@@ -35,7 +38,7 @@ help-del-forwarding(){
 	echo " DELete Tunneling"
 	echo " e.g.) ssh-cmd.sh --del-forwarding=<rport>/<username>@<shost>:<sport>"
 	echo "       ssh-cmd.sh --del-forwarding=1234/user@192.168.0.2:22"
-	echo " [options]"
+	echo " [parameters]"
 	echo " rport: remote port."
 	echo " user : SSH Server username."
 	echo " shost: SSH Server host."
@@ -97,6 +100,10 @@ __args__["svr-port"]=1
 # Default context path
 __api_context__="${server.servlet.contextpath}"
 __api_svr_port__="${server.port}"
+
+# Default description
+__desc__="No description"
+
 while [ ! -z "$1" ];
 do
 	case "$1" in
@@ -165,7 +172,7 @@ do
 					;;
 				esac
 			;;
-		-h)
+		-h | --help )
 			help
 			exit 0
 			;;
@@ -187,6 +194,10 @@ do
 			;;
 		--list-all)
 			__command__="list-all"
+			;;
+		-d)
+			shift
+			__desc__="$1"
 			;;
 		-v)
 			__verbose__=1

@@ -148,8 +148,10 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
     }
 
     /**
-     * @see open.commons.tools.ssh.service.ISshTunnelingService#connect(open.commons.tools.ssh.controller.dto.TunnelingInfo,
-     *      java.lang.String, int, open.commons.tools.ssh.controller.dto.ExecutionInfo)
+     * @since 2020. 2. 14.
+     * @author Park_Jun_Hong_(fafanmama_at_naver_com)
+     *
+     * @see open.commons.tools.ssh.service.ISshTunnelingService#connect(open.commons.tools.ssh.controller.dto.TunnelingInfo, java.lang.String, int, open.commons.tools.ssh.controller.dto.ExecutionInfo)
      */
     @Override
     public Result<String> connect(@NotNull TunnelingInfo tunneling, @NotNull String serviceHost, @Min(1) @Max(65535) int servicePort, ExecutionInfo execution) {
@@ -348,19 +350,6 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
     }
 
     /**
-     * <br>
-     * 
-     * <pre>
-     * [개정이력]
-     *      날짜    	| 작성자	|	내용
-     * ------------------------------------------
-     * 2020. 2. 14.		박준홍			최초 작성
-     * </pre>
-     *
-     * @param sessionId
-     * @param remotePort
-     * @return
-     *
      * @since 2020. 2. 14.
      * @author Park_Jun_Hong_(fafanmama_at_naver_com)
      *
@@ -468,16 +457,8 @@ public class SshTunnelingService extends AbstractComponent implements ISshTunnel
 
         return session;
     }
-
+    
     /**
-     * <br>
-     * 
-     * <pre>
-     * [개정이력]
-     *      날짜    	| 작성자	|	내용
-     * ------------------------------------------
-     * 2020. 2. 14.		박준홍			최초 작성
-     * </pre>
      *
      * @return
      *

@@ -1,102 +1,19 @@
 # 자동 접속 정보
 auto-connection-tunneling-info:
--
-    # 연결한 서비스 IP
-    serviceHost: 127.0.0.1
-    # 연결할 서비스 포트
-    servicePort: 40001
-    tunneling:
-      # SSH 서버 접속계정 사용자
-      username: "test"
-      # SSH 서버 접속계정 비밀번호
-      password: "test"
-      # SSH 서버 IP
-      sshServerHost: 10.11.1.14
-      # SSH 서버 포트
-      sshServerPort: 22
-      # 서비스 연결 포트
-      remotePort: 40001
--
-    serviceHost: 127.0.0.1
-    servicePort: 40002
-    tunneling:
-      username: "test"
-      password: "test"
-      sshServerHost: 10.11.1.14
-      sshServerPort: 22
-      remotePort: 40002
--
-    serviceHost: 127.0.0.1
-    servicePort: 40003
-    tunneling:
-      username: "test"
-      password: "test"
-      sshServerHost: 10.11.1.14
-      sshServerPort: 22
-      remotePort: 40003
--
-    serviceHost: 127.0.0.1
-    servicePort: 40004
-    tunneling:
-      username: "test"
-      password: "test"
-      sshServerHost: 10.11.1.14
-      sshServerPort: 22
-      remotePort: 40004
--
-    serviceHost: 127.0.0.1
-    servicePort: 40005
-    tunneling:
-      username: "test"
-      password: "test"
-      sshServerHost: 10.11.1.14
-      sshServerPort: 22
-      remotePort: 40005
--
-    serviceHost: 127.0.0.1
-    servicePort: 40006
-    tunneling:
-      username: "test"
-      password: "test"
-      sshServerHost: 10.11.1.14
-      sshServerPort: 22
-      remotePort: 40006
--
-    serviceHost: 127.0.0.1
-    servicePort: 40007
-    tunneling:
-      username: "test"
-      password: "test"
-      sshServerHost: 10.11.1.14
-      sshServerPort: 22
-      remotePort: 40007
--
-    serviceHost: 127.0.0.1
-    servicePort: 40008
-    tunneling:
-      username: "test"
-      password: "test"
-      sshServerHost: 10.11.1.14
-      sshServerPort: 22
-      remotePort: 40008
--
-    serviceHost: 127.0.0.1
-    servicePort: 40009
-    tunneling:
-      username: "test"
-      password: "test"
-      sshServerHost: 10.11.1.14
-      sshServerPort: 22
-      remotePort: 40009
--
-    serviceHost: 127.0.0.1
-    servicePort: 40010
-    tunneling:
-      username: "test"
-      password: "test"
-      sshServerHost: 10.11.1.14
-      sshServerPort: 22
-      remotePort: 40010
-
-
+#-
+#    # 연결한 서비스 IP
+#    serviceHost: 127.0.0.1
+#    # 연결할 서비스 포트
+#    servicePort: 40001
+#    tunneling:
+#      # SSH 서버 접속계정 사용자
+#      username: "test"
+#      # SSH 서버 접속계정 비밀번호
+#      password: "test"
+#      # SSH 서버 IP
+#      sshServerHost: 10.11.1.14
+#      # SSH 서버 포트
+#      sshServerPort: 22
+#      # 서비스 연결 포트
+#      remotePort: 40001
       

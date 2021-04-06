@@ -72,12 +72,24 @@ public class TunnelingInfo {
     @Min(1)
     @Max(65535)
     private int remotePort;
+    /** 연결에 대한 설명 */
+    private String description;
 
     /**
      * 
      * @since 2020. 2. 13.
      */
     public TunnelingInfo() {
+    }
+
+    /**
+     *
+     * @return the description
+     *
+     * @since 2020. 6. 30.
+     */
+    public String getDescription() {
+        return description;
     }
 
     /**
@@ -128,6 +140,16 @@ public class TunnelingInfo {
      */
     public String getUsername() {
         return username;
+    }
+
+    /**
+     * @param description
+     *            the description to set
+     *
+     * @since 2020. 6. 30.
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -187,12 +209,12 @@ public class TunnelingInfo {
      * [개정이력]
      *      날짜    	| 작성자	|	내용
      * ------------------------------------------
-     * 2020. 2. 13.		박준홍			최초 작성
+     * 2020. 6. 30.		박준홍			최초 작성
      * </pre>
      *
      * @return
      *
-     * @since 2020. 2. 13.
+     * @since 2020. 6. 30.
      * @author Park_Jun_Hong_(fafanmama_at_naver_com)
      *
      * @see java.lang.Object#toString()
@@ -210,6 +232,8 @@ public class TunnelingInfo {
         builder.append(sshServerPort);
         builder.append(", remotePort=");
         builder.append(remotePort);
+        builder.append(", description=");
+        builder.append(description);
         builder.append("]");
         return builder.toString();
     }

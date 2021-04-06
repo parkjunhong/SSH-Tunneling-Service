@@ -31,9 +31,9 @@
 		<log4j.version>2.11.1</log4j.version>
 		<log4j-slf4j.version>2.11.1</log4j-slf4j.version>
 
-		<open-commons-core.version>1.6.18</open-commons-core.version>
-		<open-commons-spring-web.version>0.2.4-SNAPSHOT</open-commons-spring-web.version>
-		<open-commons-spring-jdbc.version>0.0.7-SNAPSHOT</open-commons-spring-jdbc.version>
+		<open-commons-core.version>1.7.0-SNAPSHOT</open-commons-core.version>
+		<open-commons-spring-web.version>0.3.0-SNAPSHOT</open-commons-spring-web.version>
+		<open-commons-spring-jdbc.version>0.2.0-SNAPSHOT</open-commons-spring-jdbc.version>
 		
 		<jsh.version>0.1.55</jsh.version>
 		<jsch-ex.version>0.1.55.1</jsch-ex.version>

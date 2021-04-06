@@ -94,6 +94,7 @@ public class HomeController extends AbstractComponent {
             }
 
             while (itr.hasNext()) {
+                buf.append("\n");
                 APPENDER.accept(idx++, itr.next().getTunnelingInfo(), buf);
             }
         } else {

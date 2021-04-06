@@ -49,7 +49,7 @@ public class RemotePortForwarding implements Comparable<RemotePortForwarding> {
      * SSH Tunneling 포트로 연결되는 서버 포트..
      */
     private final int servicePort;
-
+    
     /**
      * 
      * @param remotePortFwdStr

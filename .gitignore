@@ -62,3 +62,6 @@ src/test/**
 
 # custom
 build-deploy.sh
+config/etri*/
+config/kisti*/
+config/lguplus*/
