@@ -4,7 +4,7 @@ Configuration:
   Properties:
     Property:
       - name: logpath
-        value: /home/parkjunhong/open-commons/log/ssh-tunneling
+        value: /home/parkjunhong/open-commons/logs/ssh-tunneling
       - name: logfile
         value: sshtunneling.log
       
