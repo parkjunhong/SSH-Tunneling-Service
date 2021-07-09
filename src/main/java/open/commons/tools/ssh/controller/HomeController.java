@@ -115,15 +115,27 @@ public class HomeController extends AbstractComponent {
         return buf.toString();
     };
 
-    @Autowired
-    @Qualifier(SshTunnelingService.BEAN_QUALIFIER)
-    private ISshTunnelingService sshSvc;
+    /** SSH 연결 서비스 */
+    private final ISshTunnelingService sshSvc;
 
     /**
+     * <br>
      * 
+     * <pre>
+     * [개정이력]
+     *      날짜    	| 작성자	|	내용
+     * ------------------------------------------
+     * 2020. 2. 13.      박준홍     최초작성
+     * 2021. 7. 9.		박준홍		Bean 생성자 포함
+     * </pre>
+     * 
+     * @param sshSvc
+     *            SSH 연결 서비스
      * @since 2020. 2. 13.
      */
-    public HomeController() {
+    @Autowired
+    public HomeController(@Qualifier(SshTunnelingService.BEAN_QUALIFIER) ISshTunnelingService sshSvc) {
+        this.sshSvc = sshSvc;
     }
 
     /**

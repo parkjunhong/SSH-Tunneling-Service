@@ -60,7 +60,7 @@ import org.springframework.validation.annotation.Validated;
  * </pre>
  * 
  * @since 2020. 2. 13.
- * @version _._._
+ * @version 1.0.0
  * @author Park_Jun_Hong_(fafanmama_at_naver_com)
  */
 @Validated
