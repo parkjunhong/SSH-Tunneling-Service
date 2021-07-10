@@ -74,6 +74,7 @@ import open.commons.util.ArrayItr;
 @RestController
 @Validated
 @RequestMapping("/connections")
+@ApiV1
 public class HomeController extends AbstractComponent {
 
     private static Function<Result<List<SshTunnelingInfo>>, Object> HANDLE_LIST_CONNECTIONS_TEXT = r -> {
@@ -167,7 +168,7 @@ public class HomeController extends AbstractComponent {
     @PutMapping(path = "/{service-host}/{service-port}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = { MediaType.TEXT_PLAIN_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<Object> connect(HttpServletRequest request, HttpServletResponse response //
             , @RequestHeader(value = HttpHeaders.ACCEPT, defaultValue = MediaType.APPLICATION_JSON_VALUE) @NotNull AcceptType acceptType //
-            , @PathVariable("service-host") @Pattern(regexp = Const.REGEX_IPV4) String serviceHost //
+            , @PathVariable("service-host") @Pattern(regexp = Const.REGEX_IPV4_DOMAIN) String serviceHost //
             , @PathVariable("service-port") @NotNull @Min(1) @Max(65535) int servicePort //
             , @RequestBody @Valid @NotNull ConnectionDTO connection //
     ) {
