@@ -26,8 +26,6 @@
 
 package open.commons.tools.ssh;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -35,20 +33,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import open.commons.Result;
 import open.commons.spring.web.BasePackageMarker;
 import open.commons.spring.web.listener.SpringApplicationListener;
-import open.commons.tools.ssh.config.ResourceConfig;
-import open.commons.tools.ssh.controller.dto.AutoConnectionTunnelingInfo;
-import open.commons.tools.ssh.controller.dto.TunnelingInfo;
-import open.commons.tools.ssh.service.ISshTunnelingService;
-import open.commons.tools.ssh.service.impl.SshTunnelingService;
-import open.commons.tools.ssh.utils.Utils;
-import open.commons.utils.ThreadUtils;
 
 /**
  * 
@@ -96,45 +85,6 @@ public class ApplicationMain {
             @Override
             public void onApplicationReadyEvent(ApplicationReadyEvent event) {
                 logger.info(" * * * * * Ready to serve");
-
-                // Auto connected...
-                runAutoConnection(event);
-            }
-
-            private void runAutoConnection(ApplicationReadyEvent event) {
-                ConfigurableApplicationContext context = event.getApplicationContext();
-                final ISshTunnelingService sshSvc = (ISshTunnelingService) context.getBean(SshTunnelingService.BEAN_QUALIFIER);
-                List<AutoConnectionTunnelingInfo> autoConns = (List<AutoConnectionTunnelingInfo>) context.getBean(ResourceConfig.BEAN_QUALIFIER_AUTO_CONNECTION_TUNNELINGS);
-                Utils.runIf(sshSvc, svc -> svc != null //
-                , autoConns, conns -> conns != null && !conns.isEmpty() //
-                , (svc, conns) -> {
-
-                    Result<String> res = null;
-                    for (AutoConnectionTunnelingInfo con : conns) {
-                        try {
-                            TunnelingInfo tunl = con.getTunneling();
-                            logger.info(" * * * * * [AUTO CONNECTING] Tunnelings: {}", tunl);
-                            res = svc.connect(con.getTunneling(), con.getServiceHost(), con.getServicePort(), null);
-
-                            if (!res.getResult()) {
-                                // 실패한 경우 1번 더 시도한다.
-                                res = svc.connect(con.getTunneling(), con.getServiceHost(), con.getServicePort(), null);
-                                if (!res.getResult()) {
-                                    logger.error(" * * * * * [FAILED A.C.] Connections: {}@{}:{} -> {}:{}", tunl.getUsername(), tunl.getSshServerHost(), tunl.getRemotePort(),
-                                            con.getServiceHost(), con.getServicePort());
-                                    continue;
-                                }
-                            }
-
-                            tunl = con.getTunneling();
-                            logger.info(" * * * * * [AUTO CONNECTED] Connections: {}@{}:{} -> {}:{}", tunl.getUsername(), tunl.getSshServerHost(), tunl.getRemotePort(),
-                                    con.getServiceHost(), con.getServicePort());
-                            
-                        }finally {
-                            ThreadUtils.sleep(1000);
-                        }
-                    }
-                });
             }
         });
 

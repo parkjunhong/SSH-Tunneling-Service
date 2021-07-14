@@ -39,6 +39,6 @@ open-commons:
         waitForTasksToCompleteOnShutdown: false # default: false
         daemon: false # default: false
         threadGroupName: async
-        threadNamePrefix: router
+        threadNamePrefix: nio
         threadPriority: 5 # MIN: 1, NORMAL: 5, MAX: 10
 

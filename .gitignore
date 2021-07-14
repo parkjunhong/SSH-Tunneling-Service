@@ -65,3 +65,4 @@ build-deploy.sh
 config/etri*/
 config/kisti*/
 config/lguplus*/
+config/local*/

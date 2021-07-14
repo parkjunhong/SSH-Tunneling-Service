@@ -68,6 +68,17 @@ public enum AcceptType {
     }
 
     /**
+     * @since 2021. 7. 14.
+     * @author Park_Jun_Hong_(fafanmama_at_naver_com)
+     *
+     * @see java.lang.Enum#toString()
+     */
+    @Override
+    public String toString() {
+        return this.type;
+    }
+
+    /**
      * 
      * @param type
      *            a string for {@link AcceptType} instance.
